@@ -1,0 +1,1 @@
+{"version":3,"file":"file-queries.js","sourceRoot":"","sources":["../../../../src/graphql/queries/file/file-queries.ts"],"names":[],"mappings":";;;AAAA,qCAAqD;AAErD,MAAM,WAAW,GAAG;IAChB,aAAa,EAAE;QACX,IAAI,EAAE,qBAAW,CAAC,uBAAa,CAAC;QAChC,OAAO,EAAE,GAAG,EAAE,CAAC,eAAe;KACjC;CACJ,CAAA;AAEQ,kCAAW"}

@@ -1,0 +1,20 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.authQueries = void 0;
+const authorization_1 = require("../../../utils/authorization");
+const auth_resolvers_1 = require("./auth-resolvers");
+const auth_types_1 = require("./auth-types");
+const authQueries = {
+    userInfo: {
+        type: auth_types_1.userInfoType,
+        resolve: (obj, args, context) => {
+            return authorization_1.authorization(auth_resolvers_1.userInfoResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    }
+};
+exports.authQueries = authQueries;
+//# sourceMappingURL=auth-queries.js.map
