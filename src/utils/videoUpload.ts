@@ -18,7 +18,7 @@ const getVideoKey = () => {
 }
 
 const uploadVideo = async (createReadStream) => {
-    const stored = await s3.upload ({ Bucket: process.env.AWS_BUCKET, Key: getVideoKey(), Body: createReadStream}, (err, data) => {
+    const stored = await s3.upload({ Bucket: process.env.AWS_BUCKET, Key: getVideoKey(), Body: createReadStream}, (err, data) => {
         if (err) {
             console.error(err);
         }

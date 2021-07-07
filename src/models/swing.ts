@@ -1,19 +1,24 @@
 import mongoose from 'mongoose';
 
 const swingSchema = new mongoose.Schema({
-    name: {
+    date: {
         type: String
     },
-    description: {
+    title: {
+        type: String
+    },
+    note: {
         type: String
     },
     frontVideo: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Video'
+        type: String,
     },
     sideVideo: {
+        type: String,
+    },
+    player: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Video'
+        ref: 'User',
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,

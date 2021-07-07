@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLObjectType, GraphQLEnumType } from "graphql";
+import { GraphQLBoolean, GraphQLObjectType, GraphQLEnumType, GraphQLString } from "graphql";
 
 const SuccessType = new GraphQLObjectType({
     name: 'SuccessType',
@@ -21,4 +21,34 @@ const VideoDirectionEnumType = new GraphQLEnumType({
     }
 });
 
-export { SuccessType, VideoDirectionEnumType };
+const SwingType = new GraphQLObjectType({
+    name: 'SwingType',
+    fields: {
+        _id: {
+            type: GraphQLString
+        },
+        date: {
+            type: GraphQLString
+        },
+        title: {
+            type: GraphQLString
+        },
+        note: {
+            type: GraphQLString
+        },
+        frontVideo: {
+            type: GraphQLString
+        },
+        sideVideo: {
+            type: GraphQLString
+        },
+        player: {
+            type: GraphQLString
+        },
+        owner: {
+            type: GraphQLString
+        }
+    }
+});
+
+export { SuccessType, VideoDirectionEnumType, SwingType };

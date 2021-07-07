@@ -1,4 +1,4 @@
-const User = require('../../../models/user');
+import User from '../../../models/user';
 
 const userInfoResolve = async (obj, args, context) => {
     const user = await User.findById(context.userId);

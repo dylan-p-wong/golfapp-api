@@ -32,6 +32,12 @@ const userSchema = new mongoose.Schema({
     }
 });
 
+userSchema.virtual('swings', {
+    ref: 'Swing',
+    localField: '_id',
+    foreignField: 'owner'
+});
+
 userSchema.virtual('drills', {
     ref: 'Drill',
     localField: '_id',
@@ -85,4 +91,4 @@ userSchema.pre('save', async function (next) {
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+export default User;
