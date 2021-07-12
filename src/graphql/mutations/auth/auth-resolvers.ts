@@ -1,4 +1,4 @@
-const User = require('../../../models/user');
+import User from '../../../models/user';
 
 const loginResolve = async (obj, { email, password }, context) => {
     try {
@@ -7,7 +7,7 @@ const loginResolve = async (obj, { email, password }, context) => {
         context.res.cookie('client-token', token);
         return true;
     } catch (e) {
-
+        console.log(e);
     }
 }
 

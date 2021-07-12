@@ -1,4 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose, { Document, PopulatedDoc } from 'mongoose';
+
+interface ISwing extends Document {
+    date: string,
+    title: string,
+    note: string,
+    frontVideo?: string,
+    sideVideo?: string,
+    player: PopulatedDoc<Document>,
+    owner: PopulatedDoc<Document>,
+}
 
 const swingSchema = new mongoose.Schema({
     date: {

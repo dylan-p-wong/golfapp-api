@@ -15,6 +15,9 @@ const swingDirectionEnumType = new GraphQLEnumType({
 export const userInfoType = new GraphQLObjectType({
     name: 'userInfoType',
     fields: {
+        _id: {
+            type: GraphQLString
+        },
         email: {
             type: GraphQLString
         },

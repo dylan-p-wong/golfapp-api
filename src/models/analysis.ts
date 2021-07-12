@@ -1,24 +1,33 @@
 import mongoose from 'mongoose';
 
 const analysisSchema = new mongoose.Schema({
-    name: {
+    date: {
         type: String
     },
-    description: {
+    title: {
+        type: String
+    },
+    note: {
         type: String
     },
     frontVideo: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Video'
+        type: String
     },
     sideVideo: {
+        type: String
+    },
+    player: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Video'
+        ref: 'User',
+    },
+    coach: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-    }
+    },
 });
 
 const Analysis = mongoose.model('Analysis', analysisSchema);

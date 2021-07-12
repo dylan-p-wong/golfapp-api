@@ -16,7 +16,7 @@ export const addSwingResolve = async (obj, { date, title, note, playerId, video,
 
     try {
         await swing.save();
-        return "swing";
+        return swing;
     } catch (e) {
         console.log(e);
     }

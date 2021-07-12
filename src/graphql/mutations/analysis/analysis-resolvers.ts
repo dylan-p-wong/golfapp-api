@@ -1,32 +1,27 @@
-import { VideoDirectionEnumType } from '../../common/types';
-import { GraphQLUpload } from 'graphql-upload';
-import { GraphQLString } from 'graphql';
+import Analysis from "../../../models/analysis";
+import { uploadVideo } from "../../../utils/videoUpload";
 
-const analysisMutation = {
-    createSwing: {
-        args: {
-            name: {
-                type: GraphQLString
-            },
-            description: {
-                type: GraphQLString
-            },
-            playerId: {
-                type: GraphQLString
-            }
-        }
-    },
-    uploadAnalysis: {
-        args: {
-            direction: {
-                type: VideoDirectionEnumType
-            },
-            video: {
-                type: GraphQLUpload
-            },
-            swingId: {
-                type: GraphQLString
-            }
-        }
+const addAnalysisResolve = async (obj, { date, title, note, playerId, video, direction }, context) => {
+    
+    const ownerId = context.userId;
+
+    if (!playerId) {
+        playerId = context.userId;
+    }
+
+
+    const { filename, mimetype, encoding, createReadStream } = await video;
+
+    const videoURL = await uploadVideo(createReadStream());
+
+    const analysis = new Analysis({ date, title, note, player: playerId, owner: ownerId, frontVideo: videoURL, direction});
+
+    try {
+        await analysis.save();
+        return analysis;
+    } catch (e) {
+        console.log(e);
     }
 }
+
+export { addAnalysisResolve };

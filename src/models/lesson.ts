@@ -1,11 +1,17 @@
 import mongoose from 'mongoose';
 
 const lessonSchema = new mongoose.Schema({
-    swing: [{
+    date: {
+        type: String
+    },
+    title: {
+        type: String
+    },
+    swings: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Swing'
     }],
-    analysis: [{
+    analyses: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Analysis'
     }],
@@ -25,6 +31,7 @@ const lessonSchema = new mongoose.Schema({
     coach: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        required: true
     },
 });
 

@@ -1,6 +1,6 @@
-import { GraphQLBoolean } from "graphql";
+import { GraphQLBoolean, GraphQLList } from "graphql";
 import { authorization } from '../../../utils/authorization';
-import { userInfoResolve } from './auth-resolvers';
+import { userInfoResolve, getUsersResolve } from './auth-resolvers';
 import { userInfoType } from './auth-types';
 
 const authQueries = {
@@ -8,6 +8,16 @@ const authQueries = {
         type: userInfoType,
         resolve: (obj, args, context) => {
             return authorization(userInfoResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
+    getUsers: {
+        type: GraphQLList(userInfoType),
+        resolve: (obj, args, context) => {
+            return authorization(getUsersResolve, {
                 obj,
                 args,
                 context

@@ -5,6 +5,11 @@ import { SwingType } from '../../common/types';
 
 const swingQueries = {
     userSwings: {
+        args: {
+            playerId: {
+                type: GraphQLString
+            }
+        },
         type: GraphQLList(SwingType),
         resolve: (obj, args, context) => {
             return authorization(userSwingsResolve, {

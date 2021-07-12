@@ -1,4 +1,5 @@
-import { GraphQLBoolean, GraphQLObjectType, GraphQLEnumType, GraphQLString } from "graphql";
+import { GraphQLBoolean, GraphQLObjectType, GraphQLEnumType, GraphQLString, GraphQLList } from "graphql";
+import { userInfoType } from "../queries/auth/auth-types";
 
 const SuccessType = new GraphQLObjectType({
     name: 'SuccessType',
@@ -15,7 +16,7 @@ const VideoDirectionEnumType = new GraphQLEnumType({
         FRONT: {
             value: 0
         },
-        BACK: {
+        SIDE: {
             value: 1
         }
     }
@@ -51,4 +52,37 @@ const SwingType = new GraphQLObjectType({
     }
 });
 
-export { SuccessType, VideoDirectionEnumType, SwingType };
+const LessonType = new GraphQLObjectType({
+    name: 'LessonType',
+    fields: {
+        _id: {
+            type: GraphQLString
+        },
+        date: {
+            type: GraphQLString
+        },
+        title: {
+            type: GraphQLString
+        },
+        swings: {
+            type: GraphQLList(SwingType)
+        },
+        analyses: {
+            type: GraphQLList(SwingType)
+        },
+        drills: {
+            type: GraphQLList(GraphQLString)
+        },
+        notes: {
+            type: GraphQLList(GraphQLString)
+        },
+        player: {
+            type: userInfoType,
+        },
+        coach: {
+            type: userInfoType
+        }
+    }
+})
+
+export { SuccessType, VideoDirectionEnumType, SwingType, LessonType };

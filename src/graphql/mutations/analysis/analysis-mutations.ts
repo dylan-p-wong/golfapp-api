@@ -1,11 +1,11 @@
 import { SwingType, VideoDirectionEnumType } from '../../common/types';
 import { GraphQLUpload } from 'graphql-upload';
-import { GraphQLNonNull, GraphQLString } from 'graphql';
+import { GraphQLString, GraphQLNonNull } from 'graphql';
 import { authorization } from '../../../utils/authorization';
-import { addSwingResolve } from './swing-resolvers'; 
+import { addAnalysisResolve } from './analysis-resolvers';
 
-const swingMutations = {
-    addSwing: {
+const analysisMutations = {
+    addAnalysis: {
         type: SwingType,
         args: {
             date: {
@@ -28,7 +28,7 @@ const swingMutations = {
             },
         },
         resolve: (obj, args, context) => {
-            return authorization(addSwingResolve, {
+            return authorization(addAnalysisResolve, {
                 obj,
                 args,
                 context
@@ -37,4 +37,4 @@ const swingMutations = {
     }
 }
 
-export { swingMutations };
+export { analysisMutations };

@@ -1,9 +1,13 @@
 import Swing from "../../../models/swing";
-
 import User from '../../../models/user';
 
-const userSwingsResolve = async (obj, args, context) => {
-    const user = await User.findById(context.userId);
+const userSwingsResolve = async (obj, { playerId }, context) => {
+    let _id = context.userId;
+    if (playerId) {
+        _id = playerId;
+    }
+
+    const user = await User.findById(_id);
     await user.populate('swings').execPopulate();
     return user.swings;
 }

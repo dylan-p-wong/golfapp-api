@@ -5,4 +5,4 @@ const router = Router();
 
 router.use('/api', [uploadGraphqlMiddleware, customerGraphqlMiddleware]);
 
-module.exports = router;
+export default router;
