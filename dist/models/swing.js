@@ -5,19 +5,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const swingSchema = new mongoose_1.default.Schema({
-    name: {
+    date: {
         type: String
     },
-    description: {
+    title: {
+        type: String
+    },
+    note: {
         type: String
     },
     frontVideo: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: 'Video'
+        type: String,
     },
     sideVideo: {
+        type: String,
+    },
+    player: {
         type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: 'Video'
+        ref: 'User',
     },
     owner: {
         type: mongoose_1.default.Schema.Types.ObjectId,

@@ -16,6 +16,9 @@ const swingDirectionEnumType = new graphql_1.GraphQLEnumType({
 exports.userInfoType = new graphql_1.GraphQLObjectType({
     name: 'userInfoType',
     fields: {
+        _id: {
+            type: graphql_1.GraphQLString
+        },
         email: {
             type: graphql_1.GraphQLString
         },

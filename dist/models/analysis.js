@@ -5,24 +5,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const analysisSchema = new mongoose_1.default.Schema({
-    name: {
+    date: {
         type: String
     },
-    description: {
+    title: {
+        type: String
+    },
+    note: {
         type: String
     },
     frontVideo: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: 'Video'
+        type: String
     },
     sideVideo: {
+        type: String
+    },
+    player: {
         type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: 'Video'
+        ref: 'User',
+    },
+    coach: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: 'User',
     },
     owner: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: 'User',
-    }
+    },
 });
 const Analysis = mongoose_1.default.model('Analysis', analysisSchema);
 exports.default = Analysis;

@@ -8,12 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userInfoResolve = void 0;
-const User = require('../../../models/user');
+exports.userInfoResolve = exports.getUsersResolve = void 0;
+const user_1 = __importDefault(require("../../../models/user"));
 const userInfoResolve = (obj, args, context) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield User.findById(context.userId);
+    const user = yield user_1.default.findById(context.userId);
     return user;
 });
 exports.userInfoResolve = userInfoResolve;
+const getUsersResolve = (obj, args, context) => __awaiter(void 0, void 0, void 0, function* () {
+    const users = yield user_1.default.find();
+    return users;
+});
+exports.getUsersResolve = getUsersResolve;
 //# sourceMappingURL=auth-resolvers.js.map

@@ -8,23 +8,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logoutResolve = exports.signupResolve = exports.loginResolve = void 0;
-const User = require('../../../models/user');
+const user_1 = __importDefault(require("../../../models/user"));
 const loginResolve = (obj, { email, password }, context) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield User.findByCredentials(email, password);
+        const user = yield user_1.default.findByCredentials(email, password);
         const token = yield user.generateAuthToken();
         context.res.cookie('client-token', token);
         return true;
     }
     catch (e) {
+        console.log(e);
     }
 });
 exports.loginResolve = loginResolve;
 const signupResolve = (obj, { email, password, firstname, lastname }, context) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newUser = new User({ email, password, firstname, lastname });
+        const newUser = new user_1.default({ email, password, firstname, lastname });
         yield newUser.save();
         const token = yield newUser.generateAuthToken();
         console.log(token);

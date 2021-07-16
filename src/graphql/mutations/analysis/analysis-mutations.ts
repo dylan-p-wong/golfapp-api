@@ -15,17 +15,17 @@ const analysisMutations = {
                 type: GraphQLNonNull(GraphQLString) 
             },
             note: {
-                type: GraphQLNonNull(GraphQLString) 
+                type: GraphQLString
             },
             playerId: {
                 type: GraphQLString
             },
-            video: {
-                type: GraphQLNonNull(GraphQLUpload)
+            video1: {
+                type: GraphQLUpload
             },
-            direction: {
-                type: VideoDirectionEnumType
-            },
+            video2: {
+                type: GraphQLUpload
+            }
         },
         resolve: (obj, args, context) => {
             return authorization(addAnalysisResolve, {

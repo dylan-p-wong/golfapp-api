@@ -44,17 +44,22 @@ const userSchema = new mongoose_1.default.Schema({
         type: Boolean
     }
 });
+userSchema.virtual('swings', {
+    ref: 'Swing',
+    localField: '_id',
+    foreignField: 'owner'
+});
 userSchema.virtual('drills', {
     ref: 'Drill',
     localField: '_id',
     foreignField: 'owner'
 });
-userSchema.virtual('lessons-player', {
+userSchema.virtual('lessons_player', {
     ref: 'Lesson',
     localField: '_id',
     foreignField: 'player'
 });
-userSchema.virtual('lessons-coach', {
+userSchema.virtual('lessons_coach', {
     ref: 'Lesson',
     localField: '_id',
     foreignField: 'coach'
@@ -73,7 +78,7 @@ userSchema.statics.findByCredentials = (email, password) => __awaiter(void 0, vo
 userSchema.methods.generateAuthToken = function () {
     return __awaiter(this, void 0, void 0, function* () {
         const user = this;
-        const token = jsonwebtoken_1.default.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
+        const token = yield jsonwebtoken_1.default.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
         return token;
     });
 };
@@ -87,5 +92,5 @@ userSchema.pre('save', function (next) {
     });
 });
 const User = mongoose_1.default.model('User', userSchema);
-module.exports = User;
+exports.default = User;
 //# sourceMappingURL=user.js.map

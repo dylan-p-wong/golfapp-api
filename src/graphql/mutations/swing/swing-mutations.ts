@@ -20,12 +20,12 @@ const swingMutations = {
             playerId: {
                 type: GraphQLString
             },
-            video: {
-                type: GraphQLNonNull(GraphQLUpload)
+            frontVideo: {
+                type: GraphQLUpload
             },
-            direction: {
-                type: VideoDirectionEnumType
-            },
+            sideVideo: {
+                type: GraphQLUpload
+            }
         },
         resolve: (obj, args, context) => {
             return authorization(addSwingResolve, {
