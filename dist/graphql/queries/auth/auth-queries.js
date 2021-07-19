@@ -25,6 +25,16 @@ const authQueries = {
                 context
             });
         }
+    },
+    getCoaches: {
+        type: graphql_1.GraphQLList(auth_types_1.userInfoType),
+        resolve: (obj, args, context) => {
+            return authorization_1.authorization(auth_resolvers_1.getCoachesResolve, {
+                obj,
+                args,
+                context
+            });
+        }
     }
 };
 exports.authQueries = authQueries;

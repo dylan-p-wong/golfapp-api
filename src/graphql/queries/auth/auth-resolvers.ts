@@ -10,4 +10,9 @@ const getUsersResolve = async (obj, args, context) => {
     return users;
 }
 
-export { getUsersResolve, userInfoResolve }; 
+const getCoachesResolve = async (obj, args, context) => {
+    const coaches = await User.find();
+    return coaches;
+}
+
+export { getUsersResolve, userInfoResolve, getCoachesResolve }; 

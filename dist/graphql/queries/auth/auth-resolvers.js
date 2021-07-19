@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userInfoResolve = exports.getUsersResolve = void 0;
+exports.getCoachesResolve = exports.userInfoResolve = exports.getUsersResolve = void 0;
 const user_1 = __importDefault(require("../../../models/user"));
 const userInfoResolve = (obj, args, context) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_1.default.findById(context.userId);
@@ -24,4 +24,9 @@ const getUsersResolve = (obj, args, context) => __awaiter(void 0, void 0, void 0
     return users;
 });
 exports.getUsersResolve = getUsersResolve;
+const getCoachesResolve = (obj, args, context) => __awaiter(void 0, void 0, void 0, function* () {
+    const coaches = yield user_1.default.find();
+    return coaches;
+});
+exports.getCoachesResolve = getCoachesResolve;
 //# sourceMappingURL=auth-resolvers.js.map

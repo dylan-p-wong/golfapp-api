@@ -103,10 +103,10 @@ const lessonMutations = {
         type: types_1.LessonRequestType,
         args: {
             lessonId: {
-                type: graphql_1.GraphQLString
+                type: graphql_1.GraphQLNonNull(graphql_1.GraphQLString)
             },
             lessonRequestId: {
-                type: graphql_1.GraphQLString
+                type: graphql_1.GraphQLNonNull(graphql_1.GraphQLString)
             }
         },
         resolve: (obj, args, context) => {
