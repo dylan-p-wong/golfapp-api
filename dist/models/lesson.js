@@ -5,9 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const lessonSchema = new mongoose_1.default.Schema({
-    date: {
-        type: String
-    },
     title: {
         type: String
     },
@@ -37,7 +34,7 @@ const lessonSchema = new mongoose_1.default.Schema({
         ref: 'User',
         required: true
     },
-});
+}, { timestamps: true });
 const Lesson = mongoose_1.default.model('Lesson', lessonSchema);
 exports.default = Lesson;
 //# sourceMappingURL=lesson.js.map

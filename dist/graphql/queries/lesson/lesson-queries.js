@@ -70,7 +70,42 @@ const lessonQueries = {
                 context
             });
         }
-    }
+    },
+    getLessonNotes: {
+        type: graphql_1.GraphQLList(types_1.NoteType),
+        args: {
+            lessonId: {
+                type: graphql_1.GraphQLNonNull(graphql_1.GraphQLString)
+            }
+        },
+        resolve: (obj, args, context) => {
+            return authorization_1.authorization(lesson_resolvers_1.getLessonNotesResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
+    getUserCoachLessonRequests: {
+        type: graphql_1.GraphQLList(types_1.LessonRequestType),
+        resolve: (obj, args, context) => {
+            return authorization_1.authorization(lesson_resolvers_1.getUserCoachLessonRequestsResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
+    getUserPlayerLessonRequests: {
+        type: graphql_1.GraphQLList(types_1.LessonRequestType),
+        resolve: (obj, args, context) => {
+            return authorization_1.authorization(lesson_resolvers_1.getUserPlayerLessonRequestsResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
 };
 exports.lessonQueries = lessonQueries;
 //# sourceMappingURL=lesson-queries.js.map

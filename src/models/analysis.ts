@@ -28,7 +28,7 @@ const analysisSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
-});
+}, { timestamps: true });
 
 const Analysis = mongoose.model('Analysis', analysisSchema);
 

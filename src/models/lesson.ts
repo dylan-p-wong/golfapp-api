@@ -1,9 +1,16 @@
-import mongoose from 'mongoose';
+import mongoose, { PopulatedDoc } from 'mongoose';
+
+interface ILesson {
+    title?: string,
+    swings: [PopulatedDoc<Document>],
+    analyses: [PopulatedDoc<Document>],
+    drills: [PopulatedDoc<Document>],
+    notes: [PopulatedDoc<Document>],
+    player: PopulatedDoc<Document>,
+    coach: PopulatedDoc<Document>
+}
 
 const lessonSchema = new mongoose.Schema({
-    date: {
-        type: String
-    },
     title: {
         type: String
     },
@@ -33,8 +40,8 @@ const lessonSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-});
+}, { timestamps: true });
 
-const Lesson = mongoose.model('Lesson', lessonSchema);
+const Lesson = mongoose.model<ILesson>('Lesson', lessonSchema);
 
 export default Lesson;

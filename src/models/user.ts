@@ -10,9 +10,11 @@ interface IUser extends Document {
     swingDirection?: string,
     handicap?: string,
     isCoach?: string,
-    swings?: PopulatedDoc<Document>,
-    lessons_player?: PopulatedDoc<Document>,
-    lessons_coach?: PopulatedDoc<Document>,
+    swings?: [PopulatedDoc<Document>],
+    lessons_player?: [PopulatedDoc<Document>],
+    lessons_coach?: [PopulatedDoc<Document>],
+    lesson_requests_player?: [PopulatedDoc<Document>],
+    lesson_requests_coach?: [PopulatedDoc<Document>],
     generateAuthToken(): Promise<String>
 }
 
@@ -48,7 +50,7 @@ const userSchema = new mongoose.Schema<IUser, UserModel>({
     isCoach: {
         type: Boolean
     }
-});
+}, { timestamps: true });
 
 userSchema.virtual('swings', {
     ref: 'Swing',
@@ -60,6 +62,18 @@ userSchema.virtual('drills', {
     ref: 'Drill',
     localField: '_id',
     foreignField: 'owner'
+});
+
+userSchema.virtual('lesson_requests_player', {
+    ref: 'LessonRequest',
+    localField: '_id',
+    foreignField: 'player'
+});
+
+userSchema.virtual('lesson_requests_coach', {
+    ref: 'LessonRequest',
+    localField: '_id',
+    foreignField: 'coach'
 });
 
 userSchema.virtual('lessons_player', {

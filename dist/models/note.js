@@ -11,7 +11,7 @@ const noteSchema = new mongoose_1.default.Schema({
     description: {
         type: String
     }
-});
+}, { timestamps: true });
 const Note = mongoose_1.default.model('Note', noteSchema);
 exports.default = Note;
 //# sourceMappingURL=note.js.map

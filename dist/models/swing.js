@@ -28,7 +28,7 @@ const swingSchema = new mongoose_1.default.Schema({
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: 'User',
     }
-});
+}, { timestamps: true });
 const Swing = mongoose_1.default.model('Swing', swingSchema);
 exports.default = Swing;
 //# sourceMappingURL=swing.js.map

@@ -34,7 +34,7 @@ const swingSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     }
-});
+}, { timestamps: true });
 
 const Swing = mongoose.model('Swing', swingSchema);
 

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LessonType = exports.SwingType = exports.VideoDirectionEnumType = exports.SuccessType = void 0;
+exports.NoteType = exports.LessonType = exports.SwingType = exports.VideoDirectionEnumType = exports.SuccessType = exports.LessonRequestType = void 0;
 const graphql_1 = require("graphql");
 const auth_types_1 = require("../queries/auth/auth-types");
 const SuccessType = new graphql_1.GraphQLObjectType({
@@ -30,9 +30,6 @@ const SwingType = new graphql_1.GraphQLObjectType({
         _id: {
             type: graphql_1.GraphQLString
         },
-        date: {
-            type: graphql_1.GraphQLString
-        },
         title: {
             type: graphql_1.GraphQLString
         },
@@ -49,6 +46,12 @@ const SwingType = new graphql_1.GraphQLObjectType({
             type: graphql_1.GraphQLString
         },
         owner: {
+            type: graphql_1.GraphQLString
+        },
+        createdAt: {
+            type: graphql_1.GraphQLString
+        },
+        updatedAt: {
             type: graphql_1.GraphQLString
         }
     }
@@ -83,8 +86,59 @@ const LessonType = new graphql_1.GraphQLObjectType({
         },
         coach: {
             type: auth_types_1.userInfoType
+        },
+        createdAt: {
+            type: graphql_1.GraphQLString
+        },
+        updatedAt: {
+            type: graphql_1.GraphQLString
         }
     }
 });
 exports.LessonType = LessonType;
+const NoteType = new graphql_1.GraphQLObjectType({
+    name: 'NoteType',
+    fields: {
+        _id: {
+            type: graphql_1.GraphQLString
+        },
+        title: {
+            type: graphql_1.GraphQLString
+        },
+        description: {
+            type: graphql_1.GraphQLString
+        },
+        createdAt: {
+            type: graphql_1.GraphQLString
+        },
+        updatedAt: {
+            type: graphql_1.GraphQLString
+        }
+    }
+});
+exports.NoteType = NoteType;
+const LessonRequestType = new graphql_1.GraphQLObjectType({
+    name: 'LessonRequestType',
+    fields: {
+        _id: {
+            type: graphql_1.GraphQLString
+        },
+        note: {
+            type: graphql_1.GraphQLString
+        },
+        player: {
+            type: auth_types_1.userInfoType
+        },
+        coach: {
+            type: auth_types_1.userInfoType
+        },
+        createdAt: {
+            type: graphql_1.GraphQLString
+        },
+        updatedAt: {
+            type: graphql_1.GraphQLString
+        }
+    }
+});
+exports.LessonRequestType = LessonRequestType;
 //# sourceMappingURL=types.js.map

@@ -35,4 +35,24 @@ const getLessonAnalysesResolve = async (obj, { lessonId }, context) => {
     return lesson.analyses;
 }
 
-export { getLessonResolve, getUserPlayerLessonsResolve, getUserCoachLessonsResolve, getLessonSwingsResolve, getLessonAnalysesResolve };
+const getLessonNotesResolve = async (obj, { lessonId }, context) => {   
+    const lesson = await Lesson.findById(lessonId);
+
+    await lesson.populate([{path: 'notes'}]).execPopulate();
+
+    return lesson.notes;
+}
+
+const getUserPlayerLessonRequestsResolve = async (obj, args, context) => {
+    const user = await User.findById(context.userId);
+    await user.populate({path: 'lesson_requests_player', populate: [ {path: 'player'}, {path: 'coach'}]}).execPopulate();
+    return user.lesson_requests_player;
+}
+
+const getUserCoachLessonRequestsResolve = async (obj, args, context) => {
+    const user = await User.findById(context.userId);
+    await user.populate({path: 'lesson_requests_coach', populate: [ {path: 'player'}, {path: 'coach'}]}).execPopulate();
+    return user.lesson_requests_coach;
+}
+
+export { getLessonResolve, getUserPlayerLessonsResolve, getUserCoachLessonsResolve, getLessonSwingsResolve, getLessonAnalysesResolve, getLessonNotesResolve, getUserPlayerLessonRequestsResolve, getUserCoachLessonRequestsResolve };

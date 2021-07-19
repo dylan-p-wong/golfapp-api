@@ -1,7 +1,7 @@
 import Swing from "../../../models/swing";
 import { uploadVideo } from "../../../utils/videoUpload"
 
-export const addSwingResolve = async (obj, { date, title, note, playerId, frontVideo, sideVideo}, context) => {
+export const addSwingResolve = async (obj, { title, note, playerId, frontVideo, sideVideo}, context) => {
     const ownerId = context.userId;
 
     if (!playerId) {
@@ -21,7 +21,7 @@ export const addSwingResolve = async (obj, { date, title, note, playerId, frontV
         sideVideoURL = await uploadVideo(createReadStream());
     }
 
-    const swing = new Swing({ date, title, note, player: playerId, owner: ownerId, frontVideo: frontVideoURL, sideVideo: sideVideoURL});
+    const swing = new Swing({ title, note, player: playerId, owner: ownerId, frontVideo: frontVideoURL, sideVideo: sideVideoURL});
     
     try {
         await swing.save();

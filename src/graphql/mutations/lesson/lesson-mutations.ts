@@ -1,7 +1,7 @@
 import { GraphQLList, GraphQLNonNull, GraphQLString } from "graphql";
 import { authorization } from "../../../utils/authorization";
-import { createLessonResolve, addSwingToLessonResolve, addAnalysisToLessonResolve } from "./lesson-resolvers";
-import { LessonType, SwingType } from "../../common/types";
+import { createLessonResolve, addSwingToLessonResolve, addAnalysisToLessonResolve, addNoteToLessonResolve, createLessonRequestResolve, addLessonToLessonRequest } from "./lesson-resolvers";
+import { LessonRequestType, LessonType, NoteType, SwingType } from "../../common/types";
 
 const lessonMutations = {
     createLesson: {
@@ -9,6 +9,9 @@ const lessonMutations = {
         args: {
             playerId: {
                 type:  GraphQLNonNull(GraphQLString) 
+            },
+            title: {
+                type:  GraphQLString
             }
         },
         resolve: (obj, args, context) => {
@@ -20,7 +23,7 @@ const lessonMutations = {
         }
     },
     addSwingToLesson: {
-        type: GraphQLList(SwingType),
+        type: SwingType,
         args: {
             lessonId: {
                 type: GraphQLNonNull(GraphQLString) 
@@ -38,7 +41,7 @@ const lessonMutations = {
         }
     },
     addAnalysisToLesson: {
-        type: GraphQLList(SwingType),
+        type: SwingType,
         args: {
             lessonId: {
                 type: GraphQLNonNull(GraphQLString) 
@@ -49,6 +52,63 @@ const lessonMutations = {
         },
         resolve: (obj, args, context) => {
             return authorization(addAnalysisToLessonResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
+    addNoteToLesson: {
+        type: NoteType,
+        args: {
+            lessonId: {
+                type: GraphQLNonNull(GraphQLString) 
+            },
+            title: {
+                type: GraphQLNonNull(GraphQLString) 
+            },
+            description: {
+                type: GraphQLNonNull(GraphQLString) 
+            }
+        },
+        resolve: (obj, args, context) => {
+            return authorization(addNoteToLessonResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
+    createLessonRequest: {
+        type: LessonRequestType,
+        args: {
+            note: {
+                type: GraphQLString
+            },
+            coachId: {
+                type: GraphQLString
+            }
+        },
+        resolve: (obj, args, context) => {
+            return authorization(createLessonRequestResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
+    addLessonToLessonRequest: {
+        type: LessonRequestType,
+        args: {
+            lessonId: {
+                type: GraphQLString
+            },
+            lessonRequestId: {
+                type: GraphQLString
+            }
+        },
+        resolve: (obj, args, context) => {
+            return authorization(addLessonToLessonRequest, {
                 obj,
                 args,
                 context

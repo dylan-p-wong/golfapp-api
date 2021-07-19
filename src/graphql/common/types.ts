@@ -28,9 +28,6 @@ const SwingType = new GraphQLObjectType({
         _id: {
             type: GraphQLString
         },
-        date: {
-            type: GraphQLString
-        },
         title: {
             type: GraphQLString
         },
@@ -47,6 +44,12 @@ const SwingType = new GraphQLObjectType({
             type: GraphQLString
         },
         owner: {
+            type: GraphQLString
+        },
+        createdAt: {
+            type: GraphQLString
+        },
+        updatedAt: {
             type: GraphQLString
         }
     }
@@ -81,8 +84,59 @@ const LessonType = new GraphQLObjectType({
         },
         coach: {
             type: userInfoType
+        },
+        createdAt: {
+            type: GraphQLString
+        },
+        updatedAt: {
+            type: GraphQLString
+        }
+    }
+});
+
+const NoteType = new GraphQLObjectType({
+    name: 'NoteType',
+    fields: {
+        _id: {
+            type: GraphQLString
+        },
+        title: {
+            type: GraphQLString
+        },
+        description: {
+            type: GraphQLString
+        },
+        createdAt: {
+            type: GraphQLString
+        },
+        updatedAt: {
+            type: GraphQLString
+        }
+    }
+});
+
+const LessonRequestType = new GraphQLObjectType({
+    name: 'LessonRequestType',
+    fields: {
+        _id: {
+            type: GraphQLString
+        },
+        note: {
+            type: GraphQLString
+        },
+        player: {
+            type: userInfoType
+        },
+        coach: {
+            type: userInfoType
+        },
+        createdAt: {
+            type: GraphQLString
+        },
+        updatedAt: {
+            type: GraphQLString
         }
     }
 })
 
-export { SuccessType, VideoDirectionEnumType, SwingType, LessonType };
+export { LessonRequestType, SuccessType, VideoDirectionEnumType, SwingType, LessonType, NoteType };

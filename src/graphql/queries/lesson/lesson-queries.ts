@@ -1,7 +1,7 @@
 import { GraphQLBoolean, GraphQLList, GraphQLNonNull, GraphQLString } from "graphql"
-import { LessonType, SwingType } from "../../common/types"
+import { LessonRequestType, LessonType, NoteType, SwingType } from "../../common/types"
 import { authorization } from "../../../utils/authorization"
-import { getLessonResolve, getUserPlayerLessonsResolve, getUserCoachLessonsResolve, getLessonSwingsResolve, getLessonAnalysesResolve } from "./lesson-resolvers"
+import { getLessonResolve, getUserPlayerLessonsResolve, getUserCoachLessonsResolve, getLessonSwingsResolve, getLessonAnalysesResolve, getLessonNotesResolve, getUserCoachLessonRequestsResolve, getUserPlayerLessonRequestsResolve } from "./lesson-resolvers"
 
 const lessonQueries = {
     getLesson: {
@@ -68,7 +68,42 @@ const lessonQueries = {
                 context
             });
         }
-    }
+    },
+    getLessonNotes: {
+        type: GraphQLList(NoteType),
+        args: {
+            lessonId: {
+                type: GraphQLNonNull(GraphQLString) 
+            }
+        },
+        resolve: (obj, args, context) => {
+            return authorization(getLessonNotesResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
+    getUserCoachLessonRequests: {
+        type: GraphQLList(LessonRequestType),
+        resolve: (obj, args, context) => {
+            return authorization(getUserCoachLessonRequestsResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
+    getUserPlayerLessonRequests: {
+        type: GraphQLList(LessonRequestType),
+        resolve: (obj, args, context) => {
+            return authorization(getUserPlayerLessonRequestsResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
 }
 
 export { lessonQueries }

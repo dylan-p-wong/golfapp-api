@@ -1,6 +1,8 @@
 import Analysis from "../../../models/analysis";
 import Drill from "../../../models/drill";
 import Lesson from "../../../models/lesson";
+import LessonRequest from "../../../models/lesson-request";
+import Note from "../../../models/note";
 import Swing from "../../../models/swing";
 import User from "../../../models/user";
 
@@ -31,9 +33,8 @@ const addSwingToLessonResolve = async (obj, { swingId, lessonId }, context) => {
     lesson.swings = swings;
 
     await lesson.save();
-    await lesson.populate('swings').execPopulate();
     
-    return lesson.swings;
+    return swing;
 }
 
 const addAnalysisToLessonResolve = async (obj, { analysisId, lessonId }, context) => {
@@ -43,11 +44,10 @@ const addAnalysisToLessonResolve = async (obj, { analysisId, lessonId }, context
     const analyses = lesson.analyses;
     analyses.push(analysis._id);
     lesson.analyses = analyses;
-
-    await lesson.save();
-    await lesson.populate('analyses').execPopulate();
     
-    return lesson.analyses;
+    await lesson.save();
+    
+    return analysis;
 }
 
 const addDrillToLessonResolve = async (obj, { drillId, lessonId }, context) => {
@@ -63,4 +63,41 @@ const addDrillToLessonResolve = async (obj, { drillId, lessonId }, context) => {
     return lesson.drills;
 }
 
-export { createLessonResolve, addSwingToLessonResolve, addAnalysisToLessonResolve, addDrillToLessonResolve };
+const addNoteToLessonResolve= async (obj, { lessonId, title, description }, context) => {
+    const lesson = await Lesson.findById(lessonId);
+    
+    const newNote = new Note({ title, description });
+    await newNote.save();
+
+    const notes = lesson.notes;
+    notes.push(newNote._id);
+    lesson.notes = notes;
+
+    await lesson.save();
+    await lesson.populate('notes').execPopulate();
+
+    return newNote;
+}
+
+const createLessonRequestResolve = async (obj, { note, coachId }, context) => {
+    const newLessonRequest = new LessonRequest({ note, player: context.userId, coach: coachId });
+    await newLessonRequest.save();
+    await newLessonRequest.populate([{ path: 'player'}, { path: 'coach' }]).execPopulate();
+
+    return newLessonRequest;
+}
+
+const addLessonToLessonRequest = async (obj, { lessonId, lessonRequestId }, context) => {
+    const lessonRequest = await LessonRequest.findById(lessonRequestId);
+
+    if (context.userId !== lessonRequest.coach) return;
+
+    const lesson = await Lesson.findById(lessonId);
+    lessonRequest.lesson = lesson._id;
+
+    await lesson.save();
+
+    return lessonRequest;
+}
+
+export { createLessonResolve, addSwingToLessonResolve, addAnalysisToLessonResolve, addDrillToLessonResolve, addNoteToLessonResolve, addLessonToLessonRequest, createLessonRequestResolve };

@@ -32,7 +32,7 @@ const analysisSchema = new mongoose_1.default.Schema({
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: 'User',
     },
-});
+}, { timestamps: true });
 const Analysis = mongoose_1.default.model('Analysis', analysisSchema);
 exports.default = Analysis;
 //# sourceMappingURL=analysis.js.map

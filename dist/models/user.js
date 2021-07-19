@@ -43,7 +43,7 @@ const userSchema = new mongoose_1.default.Schema({
     isCoach: {
         type: Boolean
     }
-});
+}, { timestamps: true });
 userSchema.virtual('swings', {
     ref: 'Swing',
     localField: '_id',
@@ -53,6 +53,16 @@ userSchema.virtual('drills', {
     ref: 'Drill',
     localField: '_id',
     foreignField: 'owner'
+});
+userSchema.virtual('lesson_requests_player', {
+    ref: 'LessonRequest',
+    localField: '_id',
+    foreignField: 'player'
+});
+userSchema.virtual('lesson_requests_coach', {
+    ref: 'LessonRequest',
+    localField: '_id',
+    foreignField: 'coach'
 });
 userSchema.virtual('lessons_player', {
     ref: 'Lesson',
