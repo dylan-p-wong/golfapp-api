@@ -20,12 +20,18 @@ const userInfoResolve = (obj, args, context) => __awaiter(void 0, void 0, void 0
 });
 exports.userInfoResolve = userInfoResolve;
 const getUsersResolve = (obj, args, context) => __awaiter(void 0, void 0, void 0, function* () {
-    const users = yield user_1.default.find();
+    const users = yield user_1.default.find({ playerAccount: true });
+    users.filter(player => {
+        return player.playerInfoCompleted;
+    });
     return users;
 });
 exports.getUsersResolve = getUsersResolve;
 const getCoachesResolve = (obj, args, context) => __awaiter(void 0, void 0, void 0, function* () {
-    const coaches = yield user_1.default.find();
+    const coaches = yield user_1.default.find({ coachAccount: true });
+    coaches.filter(coach => {
+        return coach.coachInfoCompleted;
+    });
     return coaches;
 });
 exports.getCoachesResolve = getCoachesResolve;

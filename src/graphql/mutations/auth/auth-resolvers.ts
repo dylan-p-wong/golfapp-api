@@ -11,16 +11,15 @@ const loginResolve = async (obj, { email, password }, context) => {
     }
 }
 
-const signupResolve = async (obj, { email, password, firstname, lastname }, context) => {
+const signupResolve = async (obj, { email, password, firstname, lastname, playerAccount, coachAccount }, context) => {
     try {
-        const newUser = new User({ email, password, firstname, lastname });
+        const newUser = new User({ email, password, firstname, lastname, playerAccount, coachAccount });
         await newUser.save();
         const token = await newUser.generateAuthToken();
-        console.log(token);
         context.res.cookie('client-token', token);
         return true;
     } catch (e) {
-
+        console.log(e);
     }
 }
 

@@ -1,29 +1,75 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NoteType = exports.LessonType = exports.SwingType = exports.VideoDirectionEnumType = exports.SuccessType = exports.LessonRequestType = void 0;
+exports.NoteType = exports.LessonType = exports.SwingType = exports.LessonRequestType = exports.HandType = exports.UserInfoType = void 0;
 const graphql_1 = require("graphql");
-const auth_types_1 = require("../queries/auth/auth-types");
-const SuccessType = new graphql_1.GraphQLObjectType({
-    name: 'SuccessType',
+const HandType = new graphql_1.GraphQLEnumType({
+    name: 'HandType',
+    values: {
+        RIGHT: {
+            value: 'RIGHT'
+        },
+        LEFT: {
+            value: 'LEFT'
+        }
+    }
+});
+exports.HandType = HandType;
+exports.UserInfoType = new graphql_1.GraphQLObjectType({
+    name: 'UserInfoType',
     fields: {
-        success: {
+        _id: {
+            type: graphql_1.GraphQLString
+        },
+        email: {
+            type: graphql_1.GraphQLString
+        },
+        firstname: {
+            type: graphql_1.GraphQLString
+        },
+        lastname: {
+            type: graphql_1.GraphQLString
+        },
+        phone: {
+            type: graphql_1.GraphQLString
+        },
+        hand: {
+            type: HandType
+        },
+        handicap: {
+            type: graphql_1.GraphQLFloat
+        },
+        homeCourse: {
+            type: graphql_1.GraphQLString
+        },
+        homeCourseCity: {
+            type: graphql_1.GraphQLString
+        },
+        homeCourseProvince: {
+            type: graphql_1.GraphQLString
+        },
+        homeCourseCountry: {
+            type: graphql_1.GraphQLString
+        },
+        coachAccount: {
+            type: graphql_1.GraphQLBoolean
+        },
+        playerAccount: {
+            type: graphql_1.GraphQLBoolean
+        },
+        coachingCredentials: {
+            type: graphql_1.GraphQLString
+        },
+        dateStartedCoaching: {
+            type: graphql_1.GraphQLString
+        },
+        playerInfoCompleted: {
+            type: graphql_1.GraphQLBoolean
+        },
+        coachInfoCompleted: {
             type: graphql_1.GraphQLBoolean
         }
     }
 });
-exports.SuccessType = SuccessType;
-const VideoDirectionEnumType = new graphql_1.GraphQLEnumType({
-    name: 'videoDirectionEnumType',
-    values: {
-        FRONT: {
-            value: 0
-        },
-        SIDE: {
-            value: 1
-        }
-    }
-});
-exports.VideoDirectionEnumType = VideoDirectionEnumType;
 const SwingType = new graphql_1.GraphQLObjectType({
     name: 'SwingType',
     fields: {
@@ -82,10 +128,10 @@ const LessonType = new graphql_1.GraphQLObjectType({
             type: graphql_1.GraphQLList(graphql_1.GraphQLString)
         },
         player: {
-            type: auth_types_1.userInfoType,
+            type: exports.UserInfoType,
         },
         coach: {
-            type: auth_types_1.userInfoType
+            type: exports.UserInfoType
         },
         createdAt: {
             type: graphql_1.GraphQLString
@@ -127,16 +173,22 @@ const LessonRequestType = new graphql_1.GraphQLObjectType({
             type: graphql_1.GraphQLString
         },
         player: {
-            type: auth_types_1.userInfoType
+            type: exports.UserInfoType
         },
         coach: {
-            type: auth_types_1.userInfoType
+            type: exports.UserInfoType
         },
         createdAt: {
             type: graphql_1.GraphQLString
         },
         updatedAt: {
             type: graphql_1.GraphQLString
+        },
+        lesson: {
+            type: LessonType
+        },
+        isCancelled: {
+            type: graphql_1.GraphQLBoolean
         }
     }
 });

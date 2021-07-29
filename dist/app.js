@@ -18,7 +18,7 @@ app.use(cors_1.default({
     origin: 'http://localhost:3000',
     credentials: true
 }));
-mongoose_1.default.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+mongoose_1.default.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: true });
 app.use(cookie_parser_1.default());
 app.use('/customers', customer_routes_1.default);
 app.listen(port, () => {

@@ -26,16 +26,16 @@ const loginResolve = (obj, { email, password }, context) => __awaiter(void 0, vo
     }
 });
 exports.loginResolve = loginResolve;
-const signupResolve = (obj, { email, password, firstname, lastname }, context) => __awaiter(void 0, void 0, void 0, function* () {
+const signupResolve = (obj, { email, password, firstname, lastname, playerAccount, coachAccount }, context) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newUser = new user_1.default({ email, password, firstname, lastname });
+        const newUser = new user_1.default({ email, password, firstname, lastname, playerAccount, coachAccount });
         yield newUser.save();
         const token = yield newUser.generateAuthToken();
-        console.log(token);
         context.res.cookie('client-token', token);
         return true;
     }
     catch (e) {
+        console.log(e);
     }
 });
 exports.signupResolve = signupResolve;

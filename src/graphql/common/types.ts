@@ -1,23 +1,70 @@
-import { GraphQLBoolean, GraphQLObjectType, GraphQLEnumType, GraphQLString, GraphQLList } from "graphql";
-import { userInfoType } from "../queries/auth/auth-types";
+import { GraphQLInt, GraphQLBoolean, GraphQLObjectType, GraphQLEnumType, GraphQLString, GraphQLList, GraphQLFloat } from "graphql";
 
-const SuccessType = new GraphQLObjectType({
-    name: 'SuccessType',
-    fields: {
-        success: {
-            type: GraphQLBoolean
+const HandType = new GraphQLEnumType({
+    name: 'HandType',
+    values: {
+        RIGHT: {
+            value: 'RIGHT'
+        },
+        LEFT: {
+            value: 'LEFT'
         }
-    } 
+    }
 });
 
-const VideoDirectionEnumType = new GraphQLEnumType({
-    name: 'videoDirectionEnumType',
-    values: {
-        FRONT: {
-            value: 0
+export const UserInfoType = new GraphQLObjectType({
+    name: 'UserInfoType',
+    fields: {
+        _id: {
+            type: GraphQLString
         },
-        SIDE: {
-            value: 1
+        email: {
+            type: GraphQLString
+        },
+        firstname: {
+            type: GraphQLString
+        },
+        lastname: {
+            type: GraphQLString
+        },
+        phone: {
+            type: GraphQLString
+        },
+        hand: {
+            type: HandType
+        },
+        handicap: {
+            type: GraphQLFloat
+        },
+        homeCourse: {
+            type: GraphQLString
+        },
+        homeCourseCity: {
+            type: GraphQLString
+        },
+        homeCourseProvince: {
+            type: GraphQLString
+        },
+        homeCourseCountry: {
+            type: GraphQLString
+        },
+        coachAccount: {
+            type: GraphQLBoolean
+        },
+        playerAccount:{ 
+            type: GraphQLBoolean
+        },
+        coachingCredentials: {
+            type: GraphQLString
+        },
+        dateStartedCoaching: {
+            type: GraphQLString
+        },
+        playerInfoCompleted: {
+            type: GraphQLBoolean
+        },
+        coachInfoCompleted: {
+            type: GraphQLBoolean
         }
     }
 });
@@ -80,10 +127,10 @@ const LessonType = new GraphQLObjectType({
             type: GraphQLList(GraphQLString)
         },
         player: {
-            type: userInfoType,
+            type: UserInfoType,
         },
         coach: {
-            type: userInfoType
+            type: UserInfoType
         },
         createdAt: {
             type: GraphQLString
@@ -125,18 +172,24 @@ const LessonRequestType = new GraphQLObjectType({
             type: GraphQLString
         },
         player: {
-            type: userInfoType
+            type: UserInfoType
         },
         coach: {
-            type: userInfoType
+            type: UserInfoType
         },
         createdAt: {
             type: GraphQLString
         },
         updatedAt: {
             type: GraphQLString
+        },
+        lesson: {
+            type: LessonType
+        },
+        isCancelled: {
+            type: GraphQLBoolean
         }
     }
-})
+});
 
-export { LessonRequestType, SuccessType, VideoDirectionEnumType, SwingType, LessonType, NoteType };
+export { HandType, LessonRequestType, SwingType, LessonType, NoteType };

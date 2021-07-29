@@ -1,6 +1,6 @@
 import { GraphQLList, GraphQLNonNull, GraphQLString } from "graphql";
 import { authorization } from "../../../utils/authorization";
-import { createLessonResolve, addSwingToLessonResolve, addAnalysisToLessonResolve, addNoteToLessonResolve, createLessonRequestResolve, addLessonToLessonRequest } from "./lesson-resolvers";
+import { createLessonResolve, addSwingToLessonResolve, addAnalysisToLessonResolve, addNoteToLessonResolve, createLessonRequestResolve, addLessonToLessonRequestResolve, cancelLessonRequestResolve } from "./lesson-resolvers";
 import { LessonRequestType, LessonType, NoteType, SwingType } from "../../common/types";
 
 const lessonMutations = {
@@ -108,7 +108,22 @@ const lessonMutations = {
             }
         },
         resolve: (obj, args, context) => {
-            return authorization(addLessonToLessonRequest, {
+            return authorization(addLessonToLessonRequestResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
+    cancelLessonRequest: {
+        type: LessonRequestType,
+        args: {
+            lessonRequestId: {
+                type: GraphQLNonNull(GraphQLString) 
+            }
+        },
+        resolve: (obj, args, context) => {
+            return authorization(cancelLessonRequestResolve, {
                 obj,
                 args,
                 context

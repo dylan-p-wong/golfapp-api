@@ -5,6 +5,7 @@ interface ILessonRequest{
     player: PopulatedDoc<Document>,
     coach: PopulatedDoc<Document>,
     lesson: PopulatedDoc<Document>,
+    isCancelled: boolean
 }
 
 const lessonRequestSchema = new mongoose.Schema({
@@ -22,6 +23,9 @@ const lessonRequestSchema = new mongoose.Schema({
     lesson: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Lesson'
+    },
+    isCancelled: {
+        type: Boolean
     }
 }, { timestamps: true });
 

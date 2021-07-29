@@ -1,4 +1,4 @@
-import { SwingType, VideoDirectionEnumType } from '../../common/types';
+import { SwingType} from '../../common/types';
 import { GraphQLUpload } from 'graphql-upload';
 import { GraphQLString, GraphQLNonNull } from 'graphql';
 import { authorization } from '../../../utils/authorization';

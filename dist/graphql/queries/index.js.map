@@ -1,1 +1,1 @@
-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../src/graphql/queries/index.ts"],"names":[],"mappings":";;;AAAA,sDAAkD;AAClD,sDAAkD;AAClD,yDAAqD;AACrD,4DAAwD;AAExD,MAAM,OAAO,+DACN,0BAAW,GACX,0BAAW,GACX,4BAAY,GACZ,8BAAa,CACnB,CAAA;AAEQ,0BAAO"}
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../src/graphql/queries/index.ts"],"names":[],"mappings":";;;AAAA,sDAAkD;AAClD,yDAAqD;AACrD,4DAAwD;AAExD,MAAM,OAAO,iDACN,0BAAW,GACX,4BAAY,GACZ,8BAAa,CACnB,CAAA;AAEQ,0BAAO"}

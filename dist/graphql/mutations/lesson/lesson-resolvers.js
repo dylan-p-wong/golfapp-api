@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createLessonRequestResolve = exports.addLessonToLessonRequest = exports.addNoteToLessonResolve = exports.addDrillToLessonResolve = exports.addAnalysisToLessonResolve = exports.addSwingToLessonResolve = exports.createLessonResolve = void 0;
+exports.cancelLessonRequestResolve = exports.createLessonRequestResolve = exports.addLessonToLessonRequestResolve = exports.addNoteToLessonResolve = exports.addDrillToLessonResolve = exports.addAnalysisToLessonResolve = exports.addSwingToLessonResolve = exports.createLessonResolve = void 0;
 const analysis_1 = __importDefault(require("../../../models/analysis"));
 const drill_1 = __importDefault(require("../../../models/drill"));
 const lesson_1 = __importDefault(require("../../../models/lesson"));
@@ -83,14 +83,26 @@ const createLessonRequestResolve = (obj, { note, coachId }, context) => __awaite
     return newLessonRequest;
 });
 exports.createLessonRequestResolve = createLessonRequestResolve;
-const addLessonToLessonRequest = (obj, { lessonId, lessonRequestId }, context) => __awaiter(void 0, void 0, void 0, function* () {
+const addLessonToLessonRequestResolve = (obj, { lessonId, lessonRequestId }, context) => __awaiter(void 0, void 0, void 0, function* () {
     const lessonRequest = yield lesson_request_1.default.findById(lessonRequestId);
-    if (context.userId !== lessonRequest.coach)
+    if (context.userId !== lessonRequest.coach.toString())
         return;
     const lesson = yield lesson_1.default.findById(lessonId);
     lessonRequest.lesson = lesson._id;
-    yield lesson.save();
+    yield lessonRequest.save();
+    yield lessonRequest.populate([{ path: 'player' }, { path: 'coach' }]).execPopulate();
     return lessonRequest;
 });
-exports.addLessonToLessonRequest = addLessonToLessonRequest;
+exports.addLessonToLessonRequestResolve = addLessonToLessonRequestResolve;
+const cancelLessonRequestResolve = (obj, { lessonRequestId }, context) => __awaiter(void 0, void 0, void 0, function* () {
+    const lessonRequest = yield lesson_request_1.default.findById(lessonRequestId);
+    if (context.userId !== lessonRequest.player.toString() && context.userId !== lessonRequest.coach.toString()) {
+        throw new Error("Not your lesson");
+    }
+    lessonRequest.isCancelled = true;
+    yield lessonRequest.save();
+    yield lessonRequest.populate([{ path: 'player' }, { path: 'coach' }]).execPopulate();
+    return lessonRequest;
+});
+exports.cancelLessonRequestResolve = cancelLessonRequestResolve;
 //# sourceMappingURL=lesson-resolvers.js.map

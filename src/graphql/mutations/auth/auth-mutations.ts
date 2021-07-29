@@ -29,6 +29,12 @@ const authMutations = {
             },
             lastname: {
                 type: GraphQLString
+            },
+            playerAccount: {
+                type: GraphQLBoolean
+            },
+            coachAccount: {
+                type: GraphQLBoolean
             }
         },
         resolve: signupResolve

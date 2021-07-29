@@ -87,17 +87,33 @@ const createLessonRequestResolve = async (obj, { note, coachId }, context) => {
     return newLessonRequest;
 }
 
-const addLessonToLessonRequest = async (obj, { lessonId, lessonRequestId }, context) => {
+const addLessonToLessonRequestResolve = async (obj, { lessonId, lessonRequestId }, context) => {
     const lessonRequest = await LessonRequest.findById(lessonRequestId);
 
-    if (context.userId !== lessonRequest.coach) return;
+    if (context.userId !== lessonRequest.coach.toString()) return;
 
     const lesson = await Lesson.findById(lessonId);
-    lessonRequest.lesson = lesson._id;
 
-    await lesson.save();
+    lessonRequest.lesson = lesson._id;
+    
+    await lessonRequest.save();
+    await lessonRequest.populate([{ path: 'player'}, { path: 'coach' }]).execPopulate();
 
     return lessonRequest;
 }
 
-export { createLessonResolve, addSwingToLessonResolve, addAnalysisToLessonResolve, addDrillToLessonResolve, addNoteToLessonResolve, addLessonToLessonRequest, createLessonRequestResolve };
+const cancelLessonRequestResolve = async (obj, { lessonRequestId }, context) => {
+    const lessonRequest = await LessonRequest.findById(lessonRequestId);
+
+    if (context.userId !== lessonRequest.player.toString() && context.userId !== lessonRequest.coach.toString()) {
+        throw new Error("Not your lesson");
+    }
+
+    lessonRequest.isCancelled = true;
+    await lessonRequest.save();
+    await lessonRequest.populate([{ path: 'player'}, { path: 'coach' }]).execPopulate();
+
+    return lessonRequest;
+}
+
+export { createLessonResolve, addSwingToLessonResolve, addAnalysisToLessonResolve, addDrillToLessonResolve, addNoteToLessonResolve, addLessonToLessonRequestResolve, createLessonRequestResolve, cancelLessonRequestResolve };

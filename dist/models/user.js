@@ -29,19 +29,45 @@ const userSchema = new mongoose_1.default.Schema({
         unique: true,
         required: true
     },
+    phone: {
+        type: String
+    },
     password: {
         type: String,
         required: true
     },
-    swingDirection: {
+    hand: {
         type: String,
         enum: ['RIGHT', 'LEFT']
     },
     handicap: {
         type: Number
     },
-    isCoach: {
-        type: Boolean
+    coachAccount: {
+        type: Boolean,
+        default: false
+    },
+    playerAccount: {
+        type: Boolean,
+        default: false
+    },
+    homeCourse: {
+        type: String
+    },
+    homeCourseCity: {
+        type: String
+    },
+    homeCourseCountry: {
+        type: String
+    },
+    homeCourseProvince: {
+        type: String
+    },
+    coachingCredentials: {
+        type: String
+    },
+    dateStartedCoaching: {
+        type: Date
     }
 }, { timestamps: true });
 userSchema.virtual('swings', {
@@ -73,6 +99,12 @@ userSchema.virtual('lessons_coach', {
     ref: 'Lesson',
     localField: '_id',
     foreignField: 'coach'
+});
+userSchema.virtual('playerInfoCompleted').get(function () {
+    return this.hand !== undefined;
+});
+userSchema.virtual('coachInfoCompleted').get(function () {
+    return this.coachingCredentials !== undefined && this.dateStartedCoaching !== undefined;
 });
 userSchema.statics.findByCredentials = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield User.findOne({ email });

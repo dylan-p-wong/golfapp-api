@@ -110,7 +110,22 @@ const lessonMutations = {
             }
         },
         resolve: (obj, args, context) => {
-            return authorization_1.authorization(lesson_resolvers_1.addLessonToLessonRequest, {
+            return authorization_1.authorization(lesson_resolvers_1.addLessonToLessonRequestResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
+    cancelLessonRequest: {
+        type: types_1.LessonRequestType,
+        args: {
+            lessonRequestId: {
+                type: graphql_1.GraphQLNonNull(graphql_1.GraphQLString)
+            }
+        },
+        resolve: (obj, args, context) => {
+            return authorization_1.authorization(lesson_resolvers_1.cancelLessonRequestResolve, {
                 obj,
                 args,
                 context
