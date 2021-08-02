@@ -17,7 +17,7 @@ const lesson_1 = __importDefault(require("../../../models/lesson"));
 const user_1 = __importDefault(require("../../../models/user"));
 const getLessonResolve = (obj, { lessonId }, context) => __awaiter(void 0, void 0, void 0, function* () {
     const lesson = yield lesson_1.default.findById(lessonId);
-    yield lesson.populate([{ path: 'swings' }, { path: 'analyses' }, { path: 'drills' }]).execPopulate();
+    yield lesson.populate([{ path: 'swings' }, { path: 'analyses' }, { path: 'drills' }, { path: 'player' }, { path: 'coach' }]).execPopulate();
     return lesson;
 });
 exports.getLessonResolve = getLessonResolve;
@@ -47,7 +47,7 @@ const getLessonAnalysesResolve = (obj, { lessonId }, context) => __awaiter(void 
 exports.getLessonAnalysesResolve = getLessonAnalysesResolve;
 const getLessonNotesResolve = (obj, { lessonId }, context) => __awaiter(void 0, void 0, void 0, function* () {
     const lesson = yield lesson_1.default.findById(lessonId);
-    yield lesson.populate([{ path: 'notes' }]).execPopulate();
+    yield lesson.populate([{ path: 'notes', populate: [{ path: 'user' }] }]).execPopulate();
     return lesson.notes;
 });
 exports.getLessonNotesResolve = getLessonNotesResolve;

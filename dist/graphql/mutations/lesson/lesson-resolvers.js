@@ -66,7 +66,7 @@ const addDrillToLessonResolve = (obj, { drillId, lessonId }, context) => __await
 exports.addDrillToLessonResolve = addDrillToLessonResolve;
 const addNoteToLessonResolve = (obj, { lessonId, title, description }, context) => __awaiter(void 0, void 0, void 0, function* () {
     const lesson = yield lesson_1.default.findById(lessonId);
-    const newNote = new note_1.default({ title, description });
+    const newNote = new note_1.default({ title, description, user: context.userId });
     yield newNote.save();
     const notes = lesson.notes;
     notes.push(newNote._id);

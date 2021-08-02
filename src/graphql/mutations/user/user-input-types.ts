@@ -1,4 +1,4 @@
-import { GraphQLFloat, GraphQLInputObjectType, GraphQLInt, GraphQLString } from "graphql";
+import { GraphQLBoolean, GraphQLFloat, GraphQLInputObjectType, GraphQLInt, GraphQLString } from "graphql";
 import { HandType } from "../../common/types";
 
 
@@ -40,6 +40,12 @@ const UserInputType = new GraphQLInputObjectType({
         },
         password: {
             type: GraphQLString
+        },
+        playerAccount: {
+            type: GraphQLBoolean
+        },
+        coachAccount: {
+            type: GraphQLBoolean
         }
     }
 });

@@ -65,6 +65,12 @@ export const UserInfoType = new GraphQLObjectType({
         },
         coachInfoCompleted: {
             type: GraphQLBoolean
+        },
+        createdAt: {
+            type: GraphQLString
+        },
+        updatedAt: {
+            type: GraphQLString
         }
     }
 });
@@ -158,6 +164,9 @@ const NoteType = new GraphQLObjectType({
         },
         updatedAt: {
             type: GraphQLString
+        },
+        user: {
+            type: UserInfoType
         }
     }
 });

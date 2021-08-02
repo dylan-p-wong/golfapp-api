@@ -66,7 +66,7 @@ const addDrillToLessonResolve = async (obj, { drillId, lessonId }, context) => {
 const addNoteToLessonResolve= async (obj, { lessonId, title, description }, context) => {
     const lesson = await Lesson.findById(lessonId);
     
-    const newNote = new Note({ title, description });
+    const newNote = new Note({ title, description, user: context.userId });
     await newNote.save();
 
     const notes = lesson.notes;

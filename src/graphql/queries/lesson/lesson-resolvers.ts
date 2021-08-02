@@ -3,7 +3,7 @@ import User from "../../../models/user";
 
 const getLessonResolve = async (obj, { lessonId }, context) => {
     const lesson = await Lesson.findById(lessonId);
-    await lesson.populate([{path:'swings'}, {path:'analyses'}, {path:'drills'}]).execPopulate();
+    await lesson.populate([{path:'swings'}, {path:'analyses'}, {path:'drills'}, {path:'player'}, {path: 'coach'}]).execPopulate();
     return lesson;
 }
 
@@ -37,8 +37,7 @@ const getLessonAnalysesResolve = async (obj, { lessonId }, context) => {
 
 const getLessonNotesResolve = async (obj, { lessonId }, context) => {   
     const lesson = await Lesson.findById(lessonId);
-
-    await lesson.populate([{path: 'notes'}]).execPopulate();
+    await lesson.populate([{path: 'notes', populate: [ {path: 'user'} ]}]).execPopulate();
 
     return lesson.notes;
 }
