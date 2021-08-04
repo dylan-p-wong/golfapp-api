@@ -1,11 +1,25 @@
 import Swing from "../../../models/swing";
-import { uploadVideo } from "../../../utils/videoUpload"
+import User from "../../../models/user";
+import { getPlayerTierInfo } from "../../../utils/consts/tiers";
+import { numberInLastMonth } from "../../../utils/dates";
+import { uploadVideo } from "../../../utils/video";
 
 export const addSwingResolve = async (obj, { title, note, playerId, frontVideo, sideVideo}, context) => {
     const ownerId = context.userId;
 
     if (!playerId) {
         playerId = context.userId;
+    }
+
+    const ownerUser = await User.findById(ownerId);
+    await ownerUser.populate('swings').execPopulate();
+
+    const tier = getPlayerTierInfo(ownerUser.playerTier);
+
+    const numberOfSwingsLastMonth = numberInLastMonth(ownerUser.swings);
+
+    if (numberOfSwingsLastMonth >= tier.swingUploadsPerMonth) {
+        throw new Error("You cannot upload more swings this month.");
     }
 
     let frontVideoURL;

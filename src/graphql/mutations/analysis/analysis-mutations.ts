@@ -1,4 +1,4 @@
-import { SwingType} from '../../common/types';
+import { AnalysisType, SwingType} from '../../common/types';
 import { GraphQLUpload } from 'graphql-upload';
 import { GraphQLString, GraphQLNonNull } from 'graphql';
 import { authorization } from '../../../utils/authorization';
@@ -6,7 +6,7 @@ import { addAnalysisResolve } from './analysis-resolvers';
 
 const analysisMutations = {
     addAnalysis: {
-        type: SwingType,
+        type: AnalysisType,
         args: {
             date: {
                 type: GraphQLNonNull(GraphQLString) 
@@ -24,6 +24,9 @@ const analysisMutations = {
                 type: GraphQLUpload
             },
             video2: {
+                type: GraphQLUpload
+            },
+            voice: {
                 type: GraphQLUpload
             }
         },

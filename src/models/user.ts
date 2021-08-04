@@ -1,6 +1,7 @@
 import mongoose, { Document, Model, PopulatedDoc } from 'mongoose';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
+import { FREE_TIER } from '../utils/consts/tiers';
 
 interface IUser extends Document {
     firstname: string,
@@ -13,6 +14,8 @@ interface IUser extends Document {
     playerAccount?: boolean,
     coachInfoCompleted: boolean,
     playerInfoCompleted: boolean,
+    playerTier: string,
+    coachTier: string,
     swings?: [PopulatedDoc<Document>],
     lessons_player?: [PopulatedDoc<Document>],
     lessons_coach?: [PopulatedDoc<Document>],
@@ -78,7 +81,17 @@ const userSchema = new mongoose.Schema<IUser, UserModel>({
     },
     dateStartedCoaching: {
         type: Date
-    }
+    },
+    playerTier: {
+        type: String,
+        default: FREE_TIER,
+        required: true
+    },
+    coachTier: {
+        type: String,
+        default: FREE_TIER,
+        required: true
+    },
 }, { timestamps: true });
 
 userSchema.virtual('swings', {

@@ -5,18 +5,29 @@ import LessonRequest from "../../../models/lesson-request";
 import Note from "../../../models/note";
 import Swing from "../../../models/swing";
 import User from "../../../models/user";
+import { getCoachTierInfo } from "../../../utils/consts/tiers";
+import { numberInLastMonth } from "../../../utils/dates";
 
 const createLessonResolve = async (obj, { playerId, title }, context) => {
     const player = await User.findById(playerId);
 
     if (!player) {
-        return null;
+        throw new Error("Player does not exist.");
     }
 
     const coach = await User.findById(context.userId);
 
     if (!coach) {
-        return null;
+        throw new Error("Coach does not exist.");
+    }
+
+    await coach.populate('lessons_coach').execPopulate();
+
+    const tier = getCoachTierInfo(coach.coachTier);
+    const numberOfLessonsLastMonth = numberInLastMonth(coach.lessons_coach);
+
+    if (numberOfLessonsLastMonth >= tier.lessonsPerMonth) {
+        throw new Error("You cannot create more lessons this month.");
     }
 
     const lesson = new Lesson({player: playerId, coach: coach._id, title});
@@ -29,6 +40,11 @@ const addSwingToLessonResolve = async (obj, { swingId, lessonId }, context) => {
     const swing = await Swing.findById(swingId);
     
     const swings = lesson.swings;
+
+    if (swings.length >= 3) {
+        throw new Error("You can only add 3 swings to a lesson.");
+    }
+
     swings.push(swing._id)
     lesson.swings = swings;
 
@@ -42,6 +58,11 @@ const addAnalysisToLessonResolve = async (obj, { analysisId, lessonId }, context
     const analysis = await Analysis.findById(analysisId);
 
     const analyses = lesson.analyses;
+
+    // if (analyses.length >= 3) {
+    //     throw new Error("You can only add 3 analyses to a lesson.");
+    // }
+
     analyses.push(analysis._id);
     lesson.analyses = analyses;
     
@@ -116,4 +137,4 @@ const cancelLessonRequestResolve = async (obj, { lessonRequestId }, context) => 
     return lessonRequest;
 }
 
-export { createLessonResolve, addSwingToLessonResolve, addAnalysisToLessonResolve, addDrillToLessonResolve, addNoteToLessonResolve, addLessonToLessonRequestResolve, createLessonRequestResolve, cancelLessonRequestResolve };
+export { createLessonResolve, addSwingToLessonResolve, addDrillToLessonResolve, addAnalysisToLessonResolve, addNoteToLessonResolve, addLessonToLessonRequestResolve, createLessonRequestResolve, cancelLessonRequestResolve };

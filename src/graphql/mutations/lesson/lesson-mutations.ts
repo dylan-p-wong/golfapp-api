@@ -1,7 +1,7 @@
 import { GraphQLList, GraphQLNonNull, GraphQLString } from "graphql";
 import { authorization } from "../../../utils/authorization";
 import { createLessonResolve, addSwingToLessonResolve, addAnalysisToLessonResolve, addNoteToLessonResolve, createLessonRequestResolve, addLessonToLessonRequestResolve, cancelLessonRequestResolve } from "./lesson-resolvers";
-import { LessonRequestType, LessonType, NoteType, SwingType } from "../../common/types";
+import { AnalysisType, LessonRequestType, LessonType, NoteType, SwingType } from "../../common/types";
 
 const lessonMutations = {
     createLesson: {
@@ -41,7 +41,7 @@ const lessonMutations = {
         }
     },
     addAnalysisToLesson: {
-        type: SwingType,
+        type: AnalysisType,
         args: {
             lessonId: {
                 type: GraphQLNonNull(GraphQLString) 

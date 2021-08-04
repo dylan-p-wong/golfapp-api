@@ -108,6 +108,41 @@ const SwingType = new GraphQLObjectType({
     }
 });
 
+const AnalysisType = new GraphQLObjectType({
+    name: 'AnalysisType',
+    fields: {
+        _id: {
+            type: GraphQLString
+        },
+        title: {
+            type: GraphQLString
+        },
+        note: {
+            type: GraphQLString
+        },
+        frontVideo: {
+            type: GraphQLString
+        },
+        sideVideo: {
+            type: GraphQLString
+        },
+        voice: {
+            type: GraphQLString
+        },
+        player: {
+            type: GraphQLString
+        },
+        owner: {
+            type: GraphQLString
+        },
+        createdAt: {
+            type: GraphQLString
+        },
+        updatedAt: {
+            type: GraphQLString
+        }
+    }
+});
 const LessonType = new GraphQLObjectType({
     name: 'LessonType',
     fields: {
@@ -201,4 +236,46 @@ const LessonRequestType = new GraphQLObjectType({
     }
 });
 
-export { HandType, LessonRequestType, SwingType, LessonType, NoteType };
+const PlayerTierInfoType = new GraphQLObjectType({
+    name: 'PlayerTierType',
+    fields: {
+        tier: {
+            type: GraphQLString
+        },
+        swingUploadsPerMonth: {
+            type: GraphQLInt
+        },
+        swingsThisMonth: {
+            type: GraphQLInt
+        }
+    }
+});
+
+const CoachTierInfoType = new GraphQLObjectType({
+    name: 'CoachTierType',
+    fields: {
+        tier: {
+            type: GraphQLString
+        },
+        lessonsPerMonth: {
+            type: GraphQLInt
+        },
+        lessonsThisMonth: {
+            type: GraphQLInt
+        }
+    }
+});
+
+const TierInfoType = new GraphQLObjectType({
+    name: 'TierInfoType',
+    fields: {
+        coachTier: {
+            type: CoachTierInfoType
+        },
+        playerTier: {
+            type: PlayerTierInfoType
+        }
+    }
+});
+
+export { HandType, LessonRequestType, SwingType, LessonType, NoteType, TierInfoType, AnalysisType };

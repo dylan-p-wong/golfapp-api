@@ -14,23 +14,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addAnalysisResolve = void 0;
 const analysis_1 = __importDefault(require("../../../models/analysis"));
-const videoUpload_1 = require("../../../utils/videoUpload");
-const addAnalysisResolve = (obj, { date, title, note, playerId, video1, video2, direction }, context) => __awaiter(void 0, void 0, void 0, function* () {
+const video_1 = require("../../../utils/video");
+const addAnalysisResolve = (obj, { date, title, note, playerId, video1, video2, voice, direction }, context) => __awaiter(void 0, void 0, void 0, function* () {
     const ownerId = context.userId;
     if (!playerId) {
         playerId = context.userId;
     }
+    if (!video1 && !video2) {
+        throw new Error("You must provide at least one file!");
+    }
     let video1URL;
     let video2URL;
+    let voiceURL;
     if (video1) {
         const { filename, mimetype, encoding, createReadStream } = yield video1;
-        video1URL = yield videoUpload_1.uploadVideo(createReadStream());
+        video1URL = yield video_1.uploadVideo(createReadStream());
     }
     if (video2) {
         const { filename, mimetype, encoding, createReadStream } = yield video2;
-        video2URL = yield videoUpload_1.uploadVideo(createReadStream());
+        video2URL = yield video_1.uploadVideo(createReadStream());
     }
-    const analysis = new analysis_1.default({ date, title, note, player: playerId, owner: ownerId, frontVideo: video1URL, sideVideo: video2URL, direction });
+    if (voice) {
+        const { filename, mimetype, encoding, createReadStream } = yield voice;
+        voiceURL = yield video_1.uploadVideo(createReadStream());
+    }
+    const analysis = new analysis_1.default({ date, title, note, player: playerId, owner: ownerId, frontVideo: video1URL, sideVideo: video2URL, voice: voiceURL, direction });
     try {
         yield analysis.save();
         return analysis;

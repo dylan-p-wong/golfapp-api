@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const argon2_1 = __importDefault(require("argon2"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const tiers_1 = require("../utils/consts/tiers");
 const userSchema = new mongoose_1.default.Schema({
     firstname: {
         type: String,
@@ -68,7 +69,17 @@ const userSchema = new mongoose_1.default.Schema({
     },
     dateStartedCoaching: {
         type: Date
-    }
+    },
+    playerTier: {
+        type: String,
+        default: tiers_1.FREE_TIER,
+        required: true
+    },
+    coachTier: {
+        type: String,
+        default: tiers_1.FREE_TIER,
+        required: true
+    },
 }, { timestamps: true });
 userSchema.virtual('swings', {
     ref: 'Swing',

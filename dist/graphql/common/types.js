@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NoteType = exports.LessonType = exports.SwingType = exports.LessonRequestType = exports.HandType = exports.UserInfoType = void 0;
+exports.AnalysisType = exports.TierInfoType = exports.NoteType = exports.LessonType = exports.SwingType = exports.LessonRequestType = exports.HandType = exports.UserInfoType = void 0;
 const graphql_1 = require("graphql");
 const HandType = new graphql_1.GraphQLEnumType({
     name: 'HandType',
@@ -109,6 +109,42 @@ const SwingType = new graphql_1.GraphQLObjectType({
     }
 });
 exports.SwingType = SwingType;
+const AnalysisType = new graphql_1.GraphQLObjectType({
+    name: 'AnalysisType',
+    fields: {
+        _id: {
+            type: graphql_1.GraphQLString
+        },
+        title: {
+            type: graphql_1.GraphQLString
+        },
+        note: {
+            type: graphql_1.GraphQLString
+        },
+        frontVideo: {
+            type: graphql_1.GraphQLString
+        },
+        sideVideo: {
+            type: graphql_1.GraphQLString
+        },
+        voice: {
+            type: graphql_1.GraphQLString
+        },
+        player: {
+            type: graphql_1.GraphQLString
+        },
+        owner: {
+            type: graphql_1.GraphQLString
+        },
+        createdAt: {
+            type: graphql_1.GraphQLString
+        },
+        updatedAt: {
+            type: graphql_1.GraphQLString
+        }
+    }
+});
+exports.AnalysisType = AnalysisType;
 const LessonType = new graphql_1.GraphQLObjectType({
     name: 'LessonType',
     fields: {
@@ -202,4 +238,44 @@ const LessonRequestType = new graphql_1.GraphQLObjectType({
     }
 });
 exports.LessonRequestType = LessonRequestType;
+const PlayerTierInfoType = new graphql_1.GraphQLObjectType({
+    name: 'PlayerTierType',
+    fields: {
+        tier: {
+            type: graphql_1.GraphQLString
+        },
+        swingUploadsPerMonth: {
+            type: graphql_1.GraphQLInt
+        },
+        swingsThisMonth: {
+            type: graphql_1.GraphQLInt
+        }
+    }
+});
+const CoachTierInfoType = new graphql_1.GraphQLObjectType({
+    name: 'CoachTierType',
+    fields: {
+        tier: {
+            type: graphql_1.GraphQLString
+        },
+        lessonsPerMonth: {
+            type: graphql_1.GraphQLInt
+        },
+        lessonsThisMonth: {
+            type: graphql_1.GraphQLInt
+        }
+    }
+});
+const TierInfoType = new graphql_1.GraphQLObjectType({
+    name: 'TierInfoType',
+    fields: {
+        coachTier: {
+            type: CoachTierInfoType
+        },
+        playerTier: {
+            type: PlayerTierInfoType
+        }
+    }
+});
+exports.TierInfoType = TierInfoType;
 //# sourceMappingURL=types.js.map

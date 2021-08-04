@@ -43,7 +43,7 @@ const lessonMutations = {
         }
     },
     addAnalysisToLesson: {
-        type: types_1.SwingType,
+        type: types_1.AnalysisType,
         args: {
             lessonId: {
                 type: graphql_1.GraphQLNonNull(graphql_1.GraphQLString)

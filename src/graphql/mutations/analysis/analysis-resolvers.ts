@@ -1,7 +1,7 @@
 import Analysis from "../../../models/analysis";
-import { uploadVideo } from "../../../utils/videoUpload";
+import { uploadVideo } from "../../../utils/video";
 
-const addAnalysisResolve = async (obj, { date, title, note, playerId, video1, video2, direction }, context) => {
+const addAnalysisResolve = async (obj, { date, title, note, playerId, video1, video2, voice, direction }, context) => {
     
     const ownerId = context.userId;
 
@@ -9,8 +9,13 @@ const addAnalysisResolve = async (obj, { date, title, note, playerId, video1, vi
         playerId = context.userId;
     }
 
+    if (!video1 && !video2) {
+        throw new Error("You must provide at least one file!");
+    }
+
     let video1URL;
     let video2URL;
+    let voiceURL;
 
     if (video1) {
         const { filename, mimetype, encoding, createReadStream } = await video1;
@@ -24,7 +29,13 @@ const addAnalysisResolve = async (obj, { date, title, note, playerId, video1, vi
         video2URL = await uploadVideo(createReadStream());
     }
 
-    const analysis = new Analysis({ date, title, note, player: playerId, owner: ownerId, frontVideo: video1URL, sideVideo: video2URL, direction});
+    if (voice) {
+        const { filename, mimetype, encoding, createReadStream } = await voice;
+
+        voiceURL = await uploadVideo(createReadStream());
+    }
+
+    const analysis = new Analysis({ date, title, note, player: playerId, owner: ownerId, frontVideo: video1URL, sideVideo: video2URL, voice: voiceURL, direction});
 
     try {
         await analysis.save();

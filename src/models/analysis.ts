@@ -16,6 +16,9 @@ const analysisSchema = new mongoose.Schema({
     sideVideo: {
         type: String
     },
+    voice: {
+        type: String
+    },
     player: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

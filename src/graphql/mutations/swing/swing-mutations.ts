@@ -8,9 +8,6 @@ const swingMutations = {
     addSwing: {
         type: SwingType,
         args: {
-            title: {
-                type: GraphQLNonNull(GraphQLString) 
-            },
             note: {
                 type: GraphQLNonNull(GraphQLString) 
             },

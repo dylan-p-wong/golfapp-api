@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cancelLessonRequestResolve = exports.createLessonRequestResolve = exports.addLessonToLessonRequestResolve = exports.addNoteToLessonResolve = exports.addDrillToLessonResolve = exports.addAnalysisToLessonResolve = exports.addSwingToLessonResolve = exports.createLessonResolve = void 0;
+exports.cancelLessonRequestResolve = exports.createLessonRequestResolve = exports.addLessonToLessonRequestResolve = exports.addNoteToLessonResolve = exports.addAnalysisToLessonResolve = exports.addDrillToLessonResolve = exports.addSwingToLessonResolve = exports.createLessonResolve = void 0;
 const analysis_1 = __importDefault(require("../../../models/analysis"));
 const drill_1 = __importDefault(require("../../../models/drill"));
 const lesson_1 = __importDefault(require("../../../models/lesson"));
@@ -20,14 +20,22 @@ const lesson_request_1 = __importDefault(require("../../../models/lesson-request
 const note_1 = __importDefault(require("../../../models/note"));
 const swing_1 = __importDefault(require("../../../models/swing"));
 const user_1 = __importDefault(require("../../../models/user"));
+const tiers_1 = require("../../../utils/consts/tiers");
+const dates_1 = require("../../../utils/dates");
 const createLessonResolve = (obj, { playerId, title }, context) => __awaiter(void 0, void 0, void 0, function* () {
     const player = yield user_1.default.findById(playerId);
     if (!player) {
-        return null;
+        throw new Error("Player does not exist.");
     }
     const coach = yield user_1.default.findById(context.userId);
     if (!coach) {
-        return null;
+        throw new Error("Coach does not exist.");
+    }
+    yield coach.populate('lessons_coach').execPopulate();
+    const tier = tiers_1.getCoachTierInfo(coach.coachTier);
+    const numberOfLessonsLastMonth = dates_1.numberInLastMonth(coach.lessons_coach);
+    if (numberOfLessonsLastMonth >= tier.lessonsPerMonth) {
+        throw new Error("You cannot create more lessons this month.");
     }
     const lesson = new lesson_1.default({ player: playerId, coach: coach._id, title });
     lesson.save();
@@ -38,6 +46,9 @@ const addSwingToLessonResolve = (obj, { swingId, lessonId }, context) => __await
     const lesson = yield lesson_1.default.findById(lessonId);
     const swing = yield swing_1.default.findById(swingId);
     const swings = lesson.swings;
+    if (swings.length >= 3) {
+        throw new Error("You can only add 3 swings to a lesson.");
+    }
     swings.push(swing._id);
     lesson.swings = swings;
     yield lesson.save();
@@ -48,6 +59,9 @@ const addAnalysisToLessonResolve = (obj, { analysisId, lessonId }, context) => _
     const lesson = yield lesson_1.default.findById(lessonId);
     const analysis = yield analysis_1.default.findById(analysisId);
     const analyses = lesson.analyses;
+    // if (analyses.length >= 3) {
+    //     throw new Error("You can only add 3 analyses to a lesson.");
+    // }
     analyses.push(analysis._id);
     lesson.analyses = analyses;
     yield lesson.save();

@@ -1,5 +1,5 @@
 import { GraphQLBoolean, GraphQLList, GraphQLNonNull, GraphQLString } from "graphql"
-import { LessonRequestType, LessonType, NoteType, SwingType } from "../../common/types"
+import { AnalysisType, LessonRequestType, LessonType, NoteType, SwingType } from "../../common/types"
 import { authorization } from "../../../utils/authorization"
 import { getLessonResolve, getUserPlayerLessonsResolve, getUserCoachLessonsResolve, getLessonSwingsResolve, getLessonAnalysesResolve, getLessonNotesResolve, getUserCoachLessonRequestsResolve, getUserPlayerLessonRequestsResolve } from "./lesson-resolvers"
 
@@ -55,7 +55,7 @@ const lessonQueries = {
         }
     },
     getLessonAnalyses: {
-        type: GraphQLList(SwingType),
+        type: GraphQLList(AnalysisType),
         args: {
             lessonId: {
                 type: GraphQLNonNull(GraphQLString) 

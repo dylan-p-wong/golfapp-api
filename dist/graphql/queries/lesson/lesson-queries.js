@@ -57,7 +57,7 @@ const lessonQueries = {
         }
     },
     getLessonAnalyses: {
-        type: graphql_1.GraphQLList(types_1.SwingType),
+        type: graphql_1.GraphQLList(types_1.AnalysisType),
         args: {
             lessonId: {
                 type: graphql_1.GraphQLNonNull(graphql_1.GraphQLString)

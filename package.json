@@ -20,6 +20,7 @@
     "graphql": "^15.5.1",
     "graphql-upload": "^12.0.0",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
     "mongoose": "^5.12.14",
     "typescript": "^4.3.4"
   },

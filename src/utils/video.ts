@@ -4,7 +4,10 @@ if (process.env.NODE_ENV !== 'PROD') {
     require('dotenv').config();
 }
 
-const s3 = new AWS.S3();
+const s3 = new AWS.S3({
+    apiVersion: 'latest',
+    region: 'us-east-2'
+});
 
 const getVideoKey = () => {
     let result = '';
@@ -14,7 +17,7 @@ const getVideoKey = () => {
         result += characters.charAt(Math.floor(Math.random() * characters.length));
     }
 
-    return result;
+    return result + ".mp4";
 }
 
 const uploadVideo = async (createReadStream) => {
@@ -31,4 +34,21 @@ const uploadVideo = async (createReadStream) => {
     return stored.Location;
 }
 
-export { uploadVideo };
+const getVideoKeyFromLocation = location => {
+    return location.split('/')[location.split('/').length - 1];
+}
+
+const deleteVideo = async (location) => {
+    await s3.deleteObject({ Bucket: process.env.AWS_BUCKET, Key: getVideoKeyFromLocation(location) }, (err, data) => {
+        if (err) {
+            console.error(err);
+            return false;
+        }
+
+        if (data) {
+            return true;
+        }
+    }).promise();
+}
+
+export { uploadVideo, deleteVideo }
