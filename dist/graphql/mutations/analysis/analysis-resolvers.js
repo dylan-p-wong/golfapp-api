@@ -36,7 +36,7 @@ const addAnalysisResolve = (obj, { date, title, note, playerId, video1, video2, 
     }
     if (voice) {
         const { filename, mimetype, encoding, createReadStream } = yield voice;
-        voiceURL = yield video_1.uploadVideo(createReadStream());
+        voiceURL = yield video_1.uploadAudio(createReadStream());
     }
     const analysis = new analysis_1.default({ date, title, note, player: playerId, owner: ownerId, frontVideo: video1URL, sideVideo: video2URL, voice: voiceURL, direction });
     try {

@@ -9,7 +9,7 @@ const s3 = new AWS.S3({
     region: 'us-east-2'
 });
 
-const getVideoKey = () => {
+const getFileKey = () => {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -17,11 +17,25 @@ const getVideoKey = () => {
         result += characters.charAt(Math.floor(Math.random() * characters.length));
     }
 
-    return result + ".mp4";
+    return result;
+}
+
+const uploadAudio = async (createReadStream) => {
+    const stored = await s3.upload({ Bucket: process.env.AWS_BUCKET, Key: getFileKey() + ".mp3", Body: createReadStream, ContentType: 'audio/mp3'}, (err, data) => {
+        if (err) {
+            console.error(err);
+        }
+
+        if (data) {
+            return data.Location;
+        }
+    }).promise();
+
+    return stored.Location;
 }
 
 const uploadVideo = async (createReadStream) => {
-    const stored = await s3.upload({ Bucket: process.env.AWS_BUCKET, Key: getVideoKey(), Body: createReadStream}, (err, data) => {
+    const stored = await s3.upload({ Bucket: process.env.AWS_BUCKET, Key: getFileKey() + ".mp4", Body: createReadStream}, (err, data) => {
         if (err) {
             console.error(err);
         }
@@ -51,4 +65,4 @@ const deleteVideo = async (location) => {
     }).promise();
 }
 
-export { uploadVideo, deleteVideo }
+export { uploadVideo, deleteVideo, uploadAudio }

@@ -8,9 +8,6 @@ const analysisMutations = {
     addAnalysis: {
         type: AnalysisType,
         args: {
-            date: {
-                type: GraphQLNonNull(GraphQLString) 
-            },
             title: {
                 type: GraphQLNonNull(GraphQLString) 
             },

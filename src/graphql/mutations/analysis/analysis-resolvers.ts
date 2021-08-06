@@ -1,8 +1,7 @@
 import Analysis from "../../../models/analysis";
-import { uploadVideo } from "../../../utils/video";
+import { uploadAudio, uploadVideo } from "../../../utils/video";
 
 const addAnalysisResolve = async (obj, { date, title, note, playerId, video1, video2, voice, direction }, context) => {
-    
     const ownerId = context.userId;
 
     if (!playerId) {
@@ -32,7 +31,7 @@ const addAnalysisResolve = async (obj, { date, title, note, playerId, video1, vi
     if (voice) {
         const { filename, mimetype, encoding, createReadStream } = await voice;
 
-        voiceURL = await uploadVideo(createReadStream());
+        voiceURL = await uploadAudio(createReadStream());
     }
 
     const analysis = new Analysis({ date, title, note, player: playerId, owner: ownerId, frontVideo: video1URL, sideVideo: video2URL, voice: voiceURL, direction});
