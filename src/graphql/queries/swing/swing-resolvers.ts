@@ -12,8 +12,15 @@ const userSwingsResolve = async (obj, { playerId }, context) => {
     return user.swings;
 }
 
-const getSwingResolve = async (obj, args, context) => {
-    const swing = await Swing.findById(args._id);
+const getSwingResolve = async (obj, { _id }, context) => {
+    const swing = await Swing.findById(_id);
+
+    if (swing.owner.toString() !== context.userId && !swing.viewers.find(context.userId)) {
+        throw new Error("Unauthorized!");
+    }
+
+    await swing.populate([{path:'player'}, {path:'owner'}]).execPopulate();
+
     return swing;
 }
 

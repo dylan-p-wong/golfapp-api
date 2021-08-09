@@ -94,16 +94,19 @@ const SwingType = new GraphQLObjectType({
             type: GraphQLString
         },
         player: {
-            type: GraphQLString
+            type: UserInfoType
         },
         owner: {
-            type: GraphQLString
+            type: UserInfoType
         },
         createdAt: {
             type: GraphQLString
         },
         updatedAt: {
             type: GraphQLString
+        },
+        isPublic: {
+            type: GraphQLBoolean
         }
     }
 });
@@ -178,6 +181,12 @@ const LessonType = new GraphQLObjectType({
         },
         updatedAt: {
             type: GraphQLString
+        },
+        isCompleted: {
+            type: GraphQLBoolean
+        },
+        isPublic: {
+            type: GraphQLBoolean
         }
     }
 });

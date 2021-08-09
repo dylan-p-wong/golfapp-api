@@ -5,6 +5,7 @@ const graphql_1 = require("graphql");
 const authorization_1 = require("../../../utils/authorization");
 const lesson_resolvers_1 = require("./lesson-resolvers");
 const types_1 = require("../../common/types");
+const lesson_input_types_1 = require("./lesson-input-types");
 const lessonMutations = {
     createLesson: {
         type: types_1.LessonType,
@@ -126,6 +127,24 @@ const lessonMutations = {
         },
         resolve: (obj, args, context) => {
             return authorization_1.authorization(lesson_resolvers_1.cancelLessonRequestResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
+    updateLessonResolve: {
+        type: types_1.LessonType,
+        args: {
+            info: {
+                type: lesson_input_types_1.LessonInputType
+            },
+            lessonId: {
+                type: graphql_1.GraphQLNonNull(graphql_1.GraphQLString)
+            }
+        },
+        resolve: (obj, args, context) => {
+            return authorization_1.authorization(lesson_resolvers_1.updateLessonResolve, {
                 obj,
                 args,
                 context

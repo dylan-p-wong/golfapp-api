@@ -95,16 +95,19 @@ const SwingType = new graphql_1.GraphQLObjectType({
             type: graphql_1.GraphQLString
         },
         player: {
-            type: graphql_1.GraphQLString
+            type: exports.UserInfoType
         },
         owner: {
-            type: graphql_1.GraphQLString
+            type: exports.UserInfoType
         },
         createdAt: {
             type: graphql_1.GraphQLString
         },
         updatedAt: {
             type: graphql_1.GraphQLString
+        },
+        isPublic: {
+            type: graphql_1.GraphQLBoolean
         }
     }
 });
@@ -180,6 +183,12 @@ const LessonType = new graphql_1.GraphQLObjectType({
         },
         updatedAt: {
             type: graphql_1.GraphQLString
+        },
+        isCompleted: {
+            type: graphql_1.GraphQLBoolean
+        },
+        isPublic: {
+            type: graphql_1.GraphQLBoolean
         }
     }
 });

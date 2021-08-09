@@ -20,6 +20,9 @@ const swingSchema = new mongoose_1.default.Schema({
     sideVideo: {
         type: String,
     },
+    viewers: [{
+            type: mongoose_1.default.Schema.Types.ObjectId,
+        }],
     player: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: 'User',
@@ -27,6 +30,11 @@ const swingSchema = new mongoose_1.default.Schema({
     owner: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: 'User',
+    },
+    isPublic: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 }, { timestamps: true });
 const Swing = mongoose_1.default.model('Swing', swingSchema);

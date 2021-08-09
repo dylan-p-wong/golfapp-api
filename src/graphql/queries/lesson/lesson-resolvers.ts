@@ -3,6 +3,15 @@ import User from "../../../models/user";
 
 const getLessonResolve = async (obj, { lessonId }, context) => {
     const lesson = await Lesson.findById(lessonId);
+    
+    if (context.userId === lesson.coach.toString() || context.userId === lesson.player.toString()) {
+        if (!lesson.isCompleted && context.userId !== lesson.coach.toString()) {
+            throw new Error("This lesson is not completed yet! Check back soon or contact your coach.")
+        }
+    } else {
+        throw new Error("Unauthorized");
+    }
+
     await lesson.populate([{path:'swings'}, {path:'analyses'}, {path:'drills'}, {path:'player'}, {path: 'coach'}]).execPopulate();
     return lesson;
 }
@@ -10,7 +19,7 @@ const getLessonResolve = async (obj, { lessonId }, context) => {
 const getUserPlayerLessonsResolve = async (obj, args, context) => {
     const user = await User.findById(context.userId);
     await user.populate({path: 'lessons_player', populate: [ {path: 'player'}, {path: 'coach'}]}).execPopulate();
-    return user.lessons_player;
+    return user.lessons_player.filter(lesson => lesson.isCompleted);
 }
 
 const getUserCoachLessonsResolve = async (obj, args, context) => {
@@ -21,6 +30,14 @@ const getUserCoachLessonsResolve = async (obj, args, context) => {
 
 const getLessonSwingsResolve = async (obj, { lessonId }, context) => {
     const lesson = await Lesson.findById(lessonId);
+    
+    if (context.userId === lesson.coach.toString() || context.userId === lesson.player.toString()) {
+        if (!lesson.isCompleted && context.userId !== lesson.coach.toString()) {
+            throw new Error("This lesson is not completed yet! Check back soon or contact your coach.")
+        }
+    } else {
+        throw new Error("Unauthorized");
+    }
 
     await lesson.populate([{path: 'swings'}]).execPopulate();
 
@@ -30,6 +47,14 @@ const getLessonSwingsResolve = async (obj, { lessonId }, context) => {
 const getLessonAnalysesResolve = async (obj, { lessonId }, context) => {
     const lesson = await Lesson.findById(lessonId);
 
+    if (context.userId === lesson.coach.toString()|| context.userId === lesson.player.toString()) {
+        if (!lesson.isCompleted && context.userId !== lesson.coach.toString()) {
+            throw new Error("This lesson is not completed yet! Check back soon or contact your coach.")
+        }
+    } else {
+        throw new Error("Unauthorized");
+    }
+
     await lesson.populate([{path: 'analyses'}]).execPopulate();
 
     return lesson.analyses;
@@ -37,20 +62,28 @@ const getLessonAnalysesResolve = async (obj, { lessonId }, context) => {
 
 const getLessonNotesResolve = async (obj, { lessonId }, context) => {   
     const lesson = await Lesson.findById(lessonId);
-    await lesson.populate([{path: 'notes', populate: [ {path: 'user'} ]}]).execPopulate();
 
+    if (context.userId === lesson.coach.toString() || context.userId === lesson.player.toString()) {
+        if (!lesson.isCompleted && context.userId !== lesson.coach.toString()) {
+            throw new Error("This lesson is not completed yet! Check back soon or contact your coach.")
+        }
+    } else {
+        throw new Error("Unauthorized");
+    }
+
+    await lesson.populate([{path: 'notes', populate: [ {path: 'user'} ]}]).execPopulate();
     return lesson.notes;
 }
 
 const getUserPlayerLessonRequestsResolve = async (obj, args, context) => {
     const user = await User.findById(context.userId);
-    await user.populate({path: 'lesson_requests_player', populate: [ {path: 'player'}, {path: 'coach'}]}).execPopulate();
+    await user.populate({path: 'lesson_requests_player', populate: [ {path: 'player'}, {path: 'coach'}, {path:'lesson'}]}).execPopulate();
     return user.lesson_requests_player;
 }
 
 const getUserCoachLessonRequestsResolve = async (obj, args, context) => {
     const user = await User.findById(context.userId);
-    await user.populate({path: 'lesson_requests_coach', populate: [ {path: 'player'}, {path: 'coach'}]}).execPopulate();
+    await user.populate({path: 'lesson_requests_coach', populate: [ {path: 'player'}, {path: 'coach'}, {path:'lesson'}]}).execPopulate();
     return user.lesson_requests_coach;
 }
 

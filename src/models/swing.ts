@@ -6,6 +6,7 @@ interface ISwing extends Document {
     note: string,
     frontVideo?: string,
     sideVideo?: string,
+    viewers: [string],
     player: PopulatedDoc<Document>,
     owner: PopulatedDoc<Document>,
 }
@@ -26,6 +27,9 @@ const swingSchema = new mongoose.Schema({
     sideVideo: {
         type: String,
     },
+    viewers: [{
+        type: mongoose.Schema.Types.ObjectId,
+    }],
     player: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -33,9 +37,14 @@ const swingSchema = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+    },
+    isPublic: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 }, { timestamps: true });
 
-const Swing = mongoose.model('Swing', swingSchema);
+const Swing = mongoose.model<ISwing>('Swing', swingSchema);
 
 export default Swing;

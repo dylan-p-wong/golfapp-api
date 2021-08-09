@@ -34,6 +34,16 @@ const lessonSchema = new mongoose_1.default.Schema({
         ref: 'User',
         required: true
     },
+    isCompleted: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    isPublic: {
+        type: Boolean,
+        required: true,
+        default: false
+    }
 }, { timestamps: true });
 const Lesson = mongoose_1.default.model('Lesson', lessonSchema);
 exports.default = Lesson;

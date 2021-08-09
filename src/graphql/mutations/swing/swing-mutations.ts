@@ -2,7 +2,8 @@ import { SwingType } from '../../common/types';
 import { GraphQLUpload } from 'graphql-upload';
 import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { authorization } from '../../../utils/authorization';
-import { addSwingResolve } from './swing-resolvers'; 
+import { addSwingResolve, updateSwingResolve } from './swing-resolvers'; 
+import { SwingInputType } from './swing-input-types';
 
 const swingMutations = {
     addSwing: {
@@ -28,7 +29,25 @@ const swingMutations = {
                 context
             });
         }
-    }
+    },
+    updateSwing: {
+        type: SwingType,
+        args: {
+            swingId: {
+                type: GraphQLNonNull(GraphQLString)
+            },
+            info: {
+                type: SwingInputType
+            }
+        },
+        resolve: (obj, args, context) => {
+            return authorization(updateSwingResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
 }
 
 export { swingMutations };

@@ -17,6 +17,14 @@ const lesson_1 = __importDefault(require("../../../models/lesson"));
 const user_1 = __importDefault(require("../../../models/user"));
 const getLessonResolve = (obj, { lessonId }, context) => __awaiter(void 0, void 0, void 0, function* () {
     const lesson = yield lesson_1.default.findById(lessonId);
+    if (context.userId === lesson.coach.toString() || context.userId === lesson.player.toString()) {
+        if (!lesson.isCompleted && context.userId !== lesson.coach.toString()) {
+            throw new Error("This lesson is not completed yet! Check back soon or contact your coach.");
+        }
+    }
+    else {
+        throw new Error("Unauthorized");
+    }
     yield lesson.populate([{ path: 'swings' }, { path: 'analyses' }, { path: 'drills' }, { path: 'player' }, { path: 'coach' }]).execPopulate();
     return lesson;
 });
@@ -24,7 +32,7 @@ exports.getLessonResolve = getLessonResolve;
 const getUserPlayerLessonsResolve = (obj, args, context) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_1.default.findById(context.userId);
     yield user.populate({ path: 'lessons_player', populate: [{ path: 'player' }, { path: 'coach' }] }).execPopulate();
-    return user.lessons_player;
+    return user.lessons_player.filter(lesson => lesson.isCompleted);
 });
 exports.getUserPlayerLessonsResolve = getUserPlayerLessonsResolve;
 const getUserCoachLessonsResolve = (obj, args, context) => __awaiter(void 0, void 0, void 0, function* () {
@@ -35,31 +43,55 @@ const getUserCoachLessonsResolve = (obj, args, context) => __awaiter(void 0, voi
 exports.getUserCoachLessonsResolve = getUserCoachLessonsResolve;
 const getLessonSwingsResolve = (obj, { lessonId }, context) => __awaiter(void 0, void 0, void 0, function* () {
     const lesson = yield lesson_1.default.findById(lessonId);
+    if (context.userId === lesson.coach.toString() || context.userId === lesson.player.toString()) {
+        if (!lesson.isCompleted && context.userId !== lesson.coach.toString()) {
+            throw new Error("This lesson is not completed yet! Check back soon or contact your coach.");
+        }
+    }
+    else {
+        throw new Error("Unauthorized");
+    }
     yield lesson.populate([{ path: 'swings' }]).execPopulate();
     return lesson.swings;
 });
 exports.getLessonSwingsResolve = getLessonSwingsResolve;
 const getLessonAnalysesResolve = (obj, { lessonId }, context) => __awaiter(void 0, void 0, void 0, function* () {
     const lesson = yield lesson_1.default.findById(lessonId);
+    if (context.userId === lesson.coach.toString() || context.userId === lesson.player.toString()) {
+        if (!lesson.isCompleted && context.userId !== lesson.coach.toString()) {
+            throw new Error("This lesson is not completed yet! Check back soon or contact your coach.");
+        }
+    }
+    else {
+        throw new Error("Unauthorized");
+    }
     yield lesson.populate([{ path: 'analyses' }]).execPopulate();
     return lesson.analyses;
 });
 exports.getLessonAnalysesResolve = getLessonAnalysesResolve;
 const getLessonNotesResolve = (obj, { lessonId }, context) => __awaiter(void 0, void 0, void 0, function* () {
     const lesson = yield lesson_1.default.findById(lessonId);
+    if (context.userId === lesson.coach.toString() || context.userId === lesson.player.toString()) {
+        if (!lesson.isCompleted && context.userId !== lesson.coach.toString()) {
+            throw new Error("This lesson is not completed yet! Check back soon or contact your coach.");
+        }
+    }
+    else {
+        throw new Error("Unauthorized");
+    }
     yield lesson.populate([{ path: 'notes', populate: [{ path: 'user' }] }]).execPopulate();
     return lesson.notes;
 });
 exports.getLessonNotesResolve = getLessonNotesResolve;
 const getUserPlayerLessonRequestsResolve = (obj, args, context) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_1.default.findById(context.userId);
-    yield user.populate({ path: 'lesson_requests_player', populate: [{ path: 'player' }, { path: 'coach' }] }).execPopulate();
+    yield user.populate({ path: 'lesson_requests_player', populate: [{ path: 'player' }, { path: 'coach' }, { path: 'lesson' }] }).execPopulate();
     return user.lesson_requests_player;
 });
 exports.getUserPlayerLessonRequestsResolve = getUserPlayerLessonRequestsResolve;
 const getUserCoachLessonRequestsResolve = (obj, args, context) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_1.default.findById(context.userId);
-    yield user.populate({ path: 'lesson_requests_coach', populate: [{ path: 'player' }, { path: 'coach' }] }).execPopulate();
+    yield user.populate({ path: 'lesson_requests_coach', populate: [{ path: 'player' }, { path: 'coach' }, { path: 'lesson' }] }).execPopulate();
     return user.lesson_requests_coach;
 });
 exports.getUserCoachLessonRequestsResolve = getUserCoachLessonRequestsResolve;

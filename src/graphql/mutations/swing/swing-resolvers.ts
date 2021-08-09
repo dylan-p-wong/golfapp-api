@@ -4,7 +4,7 @@ import { getPlayerTierInfo } from "../../../utils/consts/tiers";
 import { numberInLastMonth } from "../../../utils/dates";
 import { uploadVideo } from "../../../utils/video";
 
-export const addSwingResolve = async (obj, { title, note, playerId, frontVideo, sideVideo}, context) => {
+const addSwingResolve = async (obj, { title, note, playerId, frontVideo, sideVideo}, context) => {
     const ownerId = context.userId;
 
     if (!playerId) {
@@ -44,3 +44,31 @@ export const addSwingResolve = async (obj, { title, note, playerId, frontVideo, 
         console.log(e);
     }
 }
+
+const addViewerToSwingResolve = async (obj, { swingId, userId }, context) => {
+    const swing = await Swing.findById(swingId);
+
+    if (swing.viewers.indexOf(userId) < 0) {
+        swing.viewers.push(userId);
+
+        await swing.save();
+    }
+
+    return swing;
+}
+
+const updateSwingResolve = async (obj, { swingId, info }, context) => {
+    const swing = await Swing.findById(swingId);
+
+    if (!swing) {
+        throw new Error("No lesson with this id exists.");
+    }
+
+    if (context.userId !== swing.owner.toString()) {
+        throw new Error("Unauthorized");
+    }
+
+    return await Swing.findByIdAndUpdate(swingId, {...info}, { new: true });
+}
+
+export { updateSwingResolve, addSwingResolve, addViewerToSwingResolve };

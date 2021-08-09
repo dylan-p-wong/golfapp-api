@@ -8,7 +8,7 @@ interface IUser extends Document {
     lastname: string,
     email: string,
     password: string,
-    swingDirection?: string,
+    hand?: string,
     handicap?: string,
     coachingAccount?: boolean,
     playerAccount?: boolean,

@@ -59,9 +59,9 @@ const addAnalysisToLessonResolve = async (obj, { analysisId, lessonId }, context
 
     const analyses = lesson.analyses;
 
-    // if (analyses.length >= 3) {
-    //     throw new Error("You can only add 3 analyses to a lesson.");
-    // }
+    if (analyses.length >= 3) {
+        throw new Error("You can only add 3 analyses to a lesson.");
+    }
 
     analyses.push(analysis._id);
     lesson.analyses = analyses;
@@ -137,4 +137,18 @@ const cancelLessonRequestResolve = async (obj, { lessonRequestId }, context) => 
     return lessonRequest;
 }
 
-export { createLessonResolve, addSwingToLessonResolve, addDrillToLessonResolve, addAnalysisToLessonResolve, addNoteToLessonResolve, addLessonToLessonRequestResolve, createLessonRequestResolve, cancelLessonRequestResolve };
+const updateLessonResolve = async (obj, { lessonId, info }, context) => {
+    const lesson = await Lesson.findById(lessonId);
+
+    if (!lesson) {
+        throw new Error("No lesson with this id exists.");
+    }
+
+    if (context.userId !== lesson.coach.toString()) {
+        throw new Error("Unauthorized");
+    }
+
+    return await Lesson.findByIdAndUpdate(lessonId, { ...info }, { new: true });
+}
+
+export { updateLessonResolve, createLessonResolve, addSwingToLessonResolve, addDrillToLessonResolve, addAnalysisToLessonResolve, addNoteToLessonResolve, addLessonToLessonRequestResolve, createLessonRequestResolve, cancelLessonRequestResolve };

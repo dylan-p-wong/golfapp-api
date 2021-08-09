@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cancelLessonRequestResolve = exports.createLessonRequestResolve = exports.addLessonToLessonRequestResolve = exports.addNoteToLessonResolve = exports.addAnalysisToLessonResolve = exports.addDrillToLessonResolve = exports.addSwingToLessonResolve = exports.createLessonResolve = void 0;
+exports.cancelLessonRequestResolve = exports.createLessonRequestResolve = exports.addLessonToLessonRequestResolve = exports.addNoteToLessonResolve = exports.addAnalysisToLessonResolve = exports.addDrillToLessonResolve = exports.addSwingToLessonResolve = exports.createLessonResolve = exports.updateLessonResolve = void 0;
 const analysis_1 = __importDefault(require("../../../models/analysis"));
 const drill_1 = __importDefault(require("../../../models/drill"));
 const lesson_1 = __importDefault(require("../../../models/lesson"));
@@ -59,9 +59,9 @@ const addAnalysisToLessonResolve = (obj, { analysisId, lessonId }, context) => _
     const lesson = yield lesson_1.default.findById(lessonId);
     const analysis = yield analysis_1.default.findById(analysisId);
     const analyses = lesson.analyses;
-    // if (analyses.length >= 3) {
-    //     throw new Error("You can only add 3 analyses to a lesson.");
-    // }
+    if (analyses.length >= 3) {
+        throw new Error("You can only add 3 analyses to a lesson.");
+    }
     analyses.push(analysis._id);
     lesson.analyses = analyses;
     yield lesson.save();
@@ -119,4 +119,15 @@ const cancelLessonRequestResolve = (obj, { lessonRequestId }, context) => __awai
     return lessonRequest;
 });
 exports.cancelLessonRequestResolve = cancelLessonRequestResolve;
+const updateLessonResolve = (obj, { lessonId, info }, context) => __awaiter(void 0, void 0, void 0, function* () {
+    const lesson = yield lesson_1.default.findById(lessonId);
+    if (!lesson) {
+        throw new Error("No lesson with this id exists.");
+    }
+    if (context.userId !== lesson.coach.toString()) {
+        throw new Error("Unauthorized");
+    }
+    return yield lesson_1.default.findByIdAndUpdate(lessonId, Object.assign({}, info), { new: true });
+});
+exports.updateLessonResolve = updateLessonResolve;
 //# sourceMappingURL=lesson-resolvers.js.map

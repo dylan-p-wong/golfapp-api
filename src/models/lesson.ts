@@ -7,7 +7,8 @@ interface ILesson {
     drills: [PopulatedDoc<Document>],
     notes: [PopulatedDoc<Document>],
     player: PopulatedDoc<Document>,
-    coach: PopulatedDoc<Document>
+    coach: PopulatedDoc<Document>,
+    isCompleted: boolean
 }
 
 const lessonSchema = new mongoose.Schema({
@@ -40,6 +41,16 @@ const lessonSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    isCompleted: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    isPublic: {
+        type: Boolean,
+        required: true,
+        default: false
+    }
 }, { timestamps: true });
 
 const Lesson = mongoose.model<ILesson>('Lesson', lessonSchema);
