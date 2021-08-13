@@ -5,6 +5,7 @@ import LessonRequest from "../../../models/lesson-request";
 import Note from "../../../models/note";
 import Swing from "../../../models/swing";
 import User from "../../../models/user";
+import { lessonAuthorization, swingAuthorization } from "../../../utils/authorization";
 import { getCoachTierInfo } from "../../../utils/consts/tiers";
 import { numberInLastMonth } from "../../../utils/dates";
 
@@ -39,14 +40,14 @@ const addSwingToLessonResolve = async (obj, { swingId, lessonId }, context) => {
     const lesson = await Lesson.findById(lessonId);
     const swing = await Swing.findById(swingId);
     
-    const swings = lesson.swings;
-
-    if (swings.length >= 3) {
+    lessonAuthorization(lesson, context.userId, { edit: true });
+    swingAuthorization(swing, context.userId, { view: true });
+    
+    if (lesson.swings.length >= 3) {
         throw new Error("You can only add 3 swings to a lesson.");
     }
 
-    swings.push(swing._id)
-    lesson.swings = swings;
+    lesson.swings.push(swing._id);
 
     await lesson.save();
     
@@ -57,14 +58,13 @@ const addAnalysisToLessonResolve = async (obj, { analysisId, lessonId }, context
     const lesson = await Lesson.findById(lessonId);
     const analysis = await Analysis.findById(analysisId);
 
-    const analyses = lesson.analyses;
+    lessonAuthorization(lesson, context.userId, { edit: true });
 
-    if (analyses.length >= 3) {
+    if (lesson.analyses.length >= 3) {
         throw new Error("You can only add 3 analyses to a lesson.");
     }
 
-    analyses.push(analysis._id);
-    lesson.analyses = analyses;
+    lesson.analyses.push(analysis._id);
     
     await lesson.save();
     
@@ -86,13 +86,12 @@ const addDrillToLessonResolve = async (obj, { drillId, lessonId }, context) => {
 
 const addNoteToLessonResolve= async (obj, { lessonId, title, description }, context) => {
     const lesson = await Lesson.findById(lessonId);
+    lessonAuthorization(lesson, context.userId, { edit: true });
     
     const newNote = new Note({ title, description, user: context.userId });
     await newNote.save();
 
-    const notes = lesson.notes;
-    notes.push(newNote._id);
-    lesson.notes = notes;
+    lesson.notes.push(newNote._id);
 
     await lesson.save();
     await lesson.populate('notes').execPopulate();
@@ -111,7 +110,9 @@ const createLessonRequestResolve = async (obj, { note, coachId }, context) => {
 const addLessonToLessonRequestResolve = async (obj, { lessonId, lessonRequestId }, context) => {
     const lessonRequest = await LessonRequest.findById(lessonRequestId);
 
-    if (context.userId !== lessonRequest.coach.toString()) return;
+    if (context.userId !== lessonRequest.coach.toString()) {
+        throw new Error("Unauthorized");
+    }
 
     const lesson = await Lesson.findById(lessonId);
 
@@ -139,6 +140,8 @@ const cancelLessonRequestResolve = async (obj, { lessonRequestId }, context) => 
 
 const updateLessonResolve = async (obj, { lessonId, info }, context) => {
     const lesson = await Lesson.findById(lessonId);
+
+    lessonAuthorization(lesson, context.userId, { edit: true });
 
     if (!lesson) {
         throw new Error("No lesson with this id exists.");

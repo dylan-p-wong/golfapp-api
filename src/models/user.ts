@@ -10,7 +10,7 @@ interface IUser extends Document {
     password: string,
     hand?: string,
     handicap?: string,
-    coachingAccount?: boolean,
+    coachAccount?: boolean,
     playerAccount?: boolean,
     coachInfoCompleted: boolean,
     playerInfoCompleted: boolean,

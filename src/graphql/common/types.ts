@@ -287,4 +287,40 @@ const TierInfoType = new GraphQLObjectType({
     }
 });
 
-export { HandType, LessonRequestType, SwingType, LessonType, NoteType, TierInfoType, AnalysisType };
+const ActivityType = new GraphQLObjectType({
+    name: 'ActivityType',
+    fields: {
+        title: {
+            type: GraphQLString
+        },
+        createdAt: {
+            type: GraphQLString
+        }
+    }
+})
+
+const UserTotalsType = new GraphQLObjectType({
+    name: 'UserTotalsType',
+    fields: {
+        totalSwings: {
+            type: GraphQLInt
+        },
+        swingsThisMonth: {
+            type: GraphQLInt
+        },
+        totalLessons: {
+            type: GraphQLInt
+        },
+        lessonsThisMonth: {
+            type: GraphQLInt
+        },
+        totalLessonsRecieved: {
+            type: GraphQLInt
+        },
+        lessonsRecievedThisMonth: {
+            type: GraphQLInt
+        },
+    }
+});
+
+export { UserTotalsType, ActivityType, HandType, LessonRequestType, SwingType, LessonType, NoteType, TierInfoType, AnalysisType };

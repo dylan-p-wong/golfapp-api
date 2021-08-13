@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AnalysisType = exports.TierInfoType = exports.NoteType = exports.LessonType = exports.SwingType = exports.LessonRequestType = exports.HandType = exports.UserInfoType = void 0;
+exports.AnalysisType = exports.TierInfoType = exports.NoteType = exports.LessonType = exports.SwingType = exports.LessonRequestType = exports.HandType = exports.ActivityType = exports.UserTotalsType = exports.UserInfoType = void 0;
 const graphql_1 = require("graphql");
 const HandType = new graphql_1.GraphQLEnumType({
     name: 'HandType',
@@ -287,4 +287,40 @@ const TierInfoType = new graphql_1.GraphQLObjectType({
     }
 });
 exports.TierInfoType = TierInfoType;
+const ActivityType = new graphql_1.GraphQLObjectType({
+    name: 'ActivityType',
+    fields: {
+        title: {
+            type: graphql_1.GraphQLString
+        },
+        createdAt: {
+            type: graphql_1.GraphQLString
+        }
+    }
+});
+exports.ActivityType = ActivityType;
+const UserTotalsType = new graphql_1.GraphQLObjectType({
+    name: 'UserTotalsType',
+    fields: {
+        totalSwings: {
+            type: graphql_1.GraphQLInt
+        },
+        swingsThisMonth: {
+            type: graphql_1.GraphQLInt
+        },
+        totalLessons: {
+            type: graphql_1.GraphQLInt
+        },
+        lessonsThisMonth: {
+            type: graphql_1.GraphQLInt
+        },
+        totalLessonsRecieved: {
+            type: graphql_1.GraphQLInt
+        },
+        lessonsRecievedThisMonth: {
+            type: graphql_1.GraphQLInt
+        },
+    }
+});
+exports.UserTotalsType = UserTotalsType;
 //# sourceMappingURL=types.js.map

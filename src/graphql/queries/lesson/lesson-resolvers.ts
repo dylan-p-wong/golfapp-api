@@ -1,16 +1,11 @@
 import Lesson from "../../../models/lesson";
 import User from "../../../models/user";
+import { lessonAuthorization } from "../../../utils/authorization";
 
 const getLessonResolve = async (obj, { lessonId }, context) => {
     const lesson = await Lesson.findById(lessonId);
     
-    if (context.userId === lesson.coach.toString() || context.userId === lesson.player.toString()) {
-        if (!lesson.isCompleted && context.userId !== lesson.coach.toString()) {
-            throw new Error("This lesson is not completed yet! Check back soon or contact your coach.")
-        }
-    } else {
-        throw new Error("Unauthorized");
-    }
+    lessonAuthorization(lesson, context.userId, { view: true });
 
     await lesson.populate([{path:'swings'}, {path:'analyses'}, {path:'drills'}, {path:'player'}, {path: 'coach'}]).execPopulate();
     return lesson;
@@ -31,13 +26,7 @@ const getUserCoachLessonsResolve = async (obj, args, context) => {
 const getLessonSwingsResolve = async (obj, { lessonId }, context) => {
     const lesson = await Lesson.findById(lessonId);
     
-    if (context.userId === lesson.coach.toString() || context.userId === lesson.player.toString()) {
-        if (!lesson.isCompleted && context.userId !== lesson.coach.toString()) {
-            throw new Error("This lesson is not completed yet! Check back soon or contact your coach.")
-        }
-    } else {
-        throw new Error("Unauthorized");
-    }
+    lessonAuthorization(lesson, context.userId, { view: true });
 
     await lesson.populate([{path: 'swings'}]).execPopulate();
 
@@ -47,13 +36,7 @@ const getLessonSwingsResolve = async (obj, { lessonId }, context) => {
 const getLessonAnalysesResolve = async (obj, { lessonId }, context) => {
     const lesson = await Lesson.findById(lessonId);
 
-    if (context.userId === lesson.coach.toString()|| context.userId === lesson.player.toString()) {
-        if (!lesson.isCompleted && context.userId !== lesson.coach.toString()) {
-            throw new Error("This lesson is not completed yet! Check back soon or contact your coach.")
-        }
-    } else {
-        throw new Error("Unauthorized");
-    }
+    lessonAuthorization(lesson, context.userId, { view: true });
 
     await lesson.populate([{path: 'analyses'}]).execPopulate();
 
@@ -63,13 +46,7 @@ const getLessonAnalysesResolve = async (obj, { lessonId }, context) => {
 const getLessonNotesResolve = async (obj, { lessonId }, context) => {   
     const lesson = await Lesson.findById(lessonId);
 
-    if (context.userId === lesson.coach.toString() || context.userId === lesson.player.toString()) {
-        if (!lesson.isCompleted && context.userId !== lesson.coach.toString()) {
-            throw new Error("This lesson is not completed yet! Check back soon or contact your coach.")
-        }
-    } else {
-        throw new Error("Unauthorized");
-    }
+    lessonAuthorization(lesson, context.userId, { view: true });
 
     await lesson.populate([{path: 'notes', populate: [ {path: 'user'} ]}]).execPopulate();
     return lesson.notes;

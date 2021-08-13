@@ -5,12 +5,12 @@ import { HandType } from "../../common/types";
 const UserInputType = new GraphQLInputObjectType({
     name: 'UserInputType',
     fields: {
-        firstname: {
-            type: GraphQLString
-        },
-        lastname: {
-            type: GraphQLString
-        },
+        // firstname: {
+        //     type: GraphQLString
+        // },
+        // lastname: {
+        //     type: GraphQLString
+        // },
         phone: {
             type: GraphQLString
         },

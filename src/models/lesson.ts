@@ -1,4 +1,5 @@
 import mongoose, { PopulatedDoc } from 'mongoose';
+import { COMPLETED_LESSON, CREATED_LESSON, sendNotification } from '../utils/notifications';
 
 interface ILesson {
     title?: string,
@@ -8,7 +9,8 @@ interface ILesson {
     notes: [PopulatedDoc<Document>],
     player: PopulatedDoc<Document>,
     coach: PopulatedDoc<Document>,
-    isCompleted: boolean
+    isCompleted: boolean,
+    isPublic: boolean
 }
 
 const lessonSchema = new mongoose.Schema({
@@ -52,6 +54,22 @@ const lessonSchema = new mongoose.Schema({
         default: false
     }
 }, { timestamps: true });
+
+lessonSchema.post("save", async function(doc, next) {
+    const fresh = doc.createdAt === doc.updatedAt;
+
+    if (fresh) {
+        await sendNotification(doc.coach, CREATED_LESSON, doc.player);
+    }
+
+    next();
+});
+
+lessonSchema.post("findOneAndUpdate", async function (doc, next) {
+    if (doc.isCompleted) {
+        await sendNotification(doc.player, COMPLETED_LESSON, doc.coach);
+    }
+});
 
 const Lesson = mongoose.model<ILesson>('Lesson', lessonSchema);
 

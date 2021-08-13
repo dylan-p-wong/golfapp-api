@@ -32,7 +32,7 @@ const coachTiers = [
         plan_id: '',
         storageNumber: 10,
         uploadsPerMonth: 100,
-        lessonsPerMonth: 10
+        lessonsPerMonth: 100
     },
     {
         tier: STANDARD_TIER,

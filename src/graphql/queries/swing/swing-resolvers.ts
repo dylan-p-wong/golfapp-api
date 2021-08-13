@@ -8,14 +8,15 @@ const userSwingsResolve = async (obj, { playerId }, context) => {
     }
 
     const user = await User.findById(_id);
+
     await user.populate('swings').execPopulate();
-    return user.swings;
+    return playerId ? user.swings.filter(swing => swing.isPublic || swing.viewers.indexOf(context.userId) >= 0) : user.swings;
 }
 
 const getSwingResolve = async (obj, { _id }, context) => {
     const swing = await Swing.findById(_id);
-
-    if (swing.owner.toString() !== context.userId && !swing.viewers.find(context.userId)) {
+    
+    if (swing.owner.toString() !== context.userId && swing.viewers.indexOf(context.userId) <= 0 && !swing.isPublic) {
         throw new Error("Unauthorized!");
     }
 

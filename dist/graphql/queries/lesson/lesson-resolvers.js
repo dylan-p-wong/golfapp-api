@@ -15,16 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserCoachLessonRequestsResolve = exports.getUserPlayerLessonRequestsResolve = exports.getLessonNotesResolve = exports.getLessonAnalysesResolve = exports.getLessonSwingsResolve = exports.getUserCoachLessonsResolve = exports.getUserPlayerLessonsResolve = exports.getLessonResolve = void 0;
 const lesson_1 = __importDefault(require("../../../models/lesson"));
 const user_1 = __importDefault(require("../../../models/user"));
+const authorization_1 = require("../../../utils/authorization");
 const getLessonResolve = (obj, { lessonId }, context) => __awaiter(void 0, void 0, void 0, function* () {
     const lesson = yield lesson_1.default.findById(lessonId);
-    if (context.userId === lesson.coach.toString() || context.userId === lesson.player.toString()) {
-        if (!lesson.isCompleted && context.userId !== lesson.coach.toString()) {
-            throw new Error("This lesson is not completed yet! Check back soon or contact your coach.");
-        }
-    }
-    else {
-        throw new Error("Unauthorized");
-    }
+    authorization_1.lessonAuthorization(lesson, context.userId, { view: true });
     yield lesson.populate([{ path: 'swings' }, { path: 'analyses' }, { path: 'drills' }, { path: 'player' }, { path: 'coach' }]).execPopulate();
     return lesson;
 });
@@ -43,42 +37,21 @@ const getUserCoachLessonsResolve = (obj, args, context) => __awaiter(void 0, voi
 exports.getUserCoachLessonsResolve = getUserCoachLessonsResolve;
 const getLessonSwingsResolve = (obj, { lessonId }, context) => __awaiter(void 0, void 0, void 0, function* () {
     const lesson = yield lesson_1.default.findById(lessonId);
-    if (context.userId === lesson.coach.toString() || context.userId === lesson.player.toString()) {
-        if (!lesson.isCompleted && context.userId !== lesson.coach.toString()) {
-            throw new Error("This lesson is not completed yet! Check back soon or contact your coach.");
-        }
-    }
-    else {
-        throw new Error("Unauthorized");
-    }
+    authorization_1.lessonAuthorization(lesson, context.userId, { view: true });
     yield lesson.populate([{ path: 'swings' }]).execPopulate();
     return lesson.swings;
 });
 exports.getLessonSwingsResolve = getLessonSwingsResolve;
 const getLessonAnalysesResolve = (obj, { lessonId }, context) => __awaiter(void 0, void 0, void 0, function* () {
     const lesson = yield lesson_1.default.findById(lessonId);
-    if (context.userId === lesson.coach.toString() || context.userId === lesson.player.toString()) {
-        if (!lesson.isCompleted && context.userId !== lesson.coach.toString()) {
-            throw new Error("This lesson is not completed yet! Check back soon or contact your coach.");
-        }
-    }
-    else {
-        throw new Error("Unauthorized");
-    }
+    authorization_1.lessonAuthorization(lesson, context.userId, { view: true });
     yield lesson.populate([{ path: 'analyses' }]).execPopulate();
     return lesson.analyses;
 });
 exports.getLessonAnalysesResolve = getLessonAnalysesResolve;
 const getLessonNotesResolve = (obj, { lessonId }, context) => __awaiter(void 0, void 0, void 0, function* () {
     const lesson = yield lesson_1.default.findById(lessonId);
-    if (context.userId === lesson.coach.toString() || context.userId === lesson.player.toString()) {
-        if (!lesson.isCompleted && context.userId !== lesson.coach.toString()) {
-            throw new Error("This lesson is not completed yet! Check back soon or contact your coach.");
-        }
-    }
-    else {
-        throw new Error("Unauthorized");
-    }
+    authorization_1.lessonAuthorization(lesson, context.userId, { view: true });
     yield lesson.populate([{ path: 'notes', populate: [{ path: 'user' }] }]).execPopulate();
     return lesson.notes;
 });

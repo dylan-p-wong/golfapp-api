@@ -1,12 +1,38 @@
+import { GraphQLBoolean, GraphQLInt, GraphQLList } from "graphql";
 import { authorization } from "../../../utils/authorization";
-import { TierInfoType } from "../../common/types";
-import { userTierResolve } from "./user-resolvers";
+import { ActivityType, TierInfoType, UserTotalsType } from "../../common/types";
+import { userNotificationResolve, userTierResolve, userTotalsResolve } from "./user-resolvers";
 
 const userQueries = {
     userTier: {
         type: TierInfoType,
         resolve: (obj, args, context) => {
             return authorization(userTierResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
+    userNotifications: {
+        type: GraphQLList(ActivityType),
+        args: {
+            count: {
+                type: GraphQLInt
+            }
+        },
+        resolve: (obj, args, context) => {
+            return authorization(userNotificationResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
+    userTotals: {
+        type: UserTotalsType,
+        resolve: (obj, args, context) => {
+            return authorization(userTotalsResolve, {
                 obj,
                 args,
                 context
