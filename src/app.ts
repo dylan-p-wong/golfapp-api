@@ -9,7 +9,7 @@ if (process.env.NODE_ENV !== 'PROD') {
 }
 
 const app = express();
-const port = process.env.port || 4000;
+const port = process.env.PORT || 4000;
 
 app.set('trust proxy', 1);
 
