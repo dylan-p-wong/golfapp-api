@@ -7,7 +7,7 @@ const loginResolve = async (obj, { email, password }, context) => {
         context.res.cookie('client-token', token);
         return true;
     } catch (e) {
-        console.log(e);
+        throw new Error(e);
     }
 }
 
@@ -19,7 +19,7 @@ const signupResolve = async (obj, { email, password, firstname, lastname, player
         context.res.cookie('client-token', token);
         return true;
     } catch (e) {
-        console.log(e);
+        throw new Error(e);
     }
 }
 
@@ -35,7 +35,7 @@ const logoutResolve = async (obj, args, context) => {
 
         context.res.clearCookie('client-token');
     } catch (e) {
-
+        throw new Error(e);
     }
 }
 
