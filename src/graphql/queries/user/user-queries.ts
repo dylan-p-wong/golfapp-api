@@ -1,7 +1,7 @@
 import { GraphQLBoolean, GraphQLInt, GraphQLList } from "graphql";
 import { authorization } from "../../../utils/authorization";
-import { ActivityType, TierInfoType, UserTotalsType } from "../../common/types";
-import { userNotificationResolve, userTierResolve, userTotalsResolve } from "./user-resolvers";
+import { ActivityType, TierInfoType, UserInfoType, UserTotalsType } from "../../common/types";
+import { userCoachesResolve, userNotificationResolve, userStudentsResolve, userTierResolve, userTotalsResolve } from "./user-resolvers";
 
 const userQueries = {
     userTier: {
@@ -33,6 +33,26 @@ const userQueries = {
         type: UserTotalsType,
         resolve: (obj, args, context) => {
             return authorization(userTotalsResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
+    userStudents: {
+        type: GraphQLList(UserInfoType),
+        resolve: (obj, args, context) => {
+            return authorization(userStudentsResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
+    userCoaches: {
+        type: GraphQLList(UserInfoType),
+        resolve: (obj, args, context) => {
+            return authorization(userCoachesResolve, {
                 obj,
                 args,
                 context

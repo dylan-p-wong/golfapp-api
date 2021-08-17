@@ -25,6 +25,14 @@ const signupResolve = async (obj, { email, password, firstname, lastname, player
 
 const logoutResolve = async (obj, args, context) => {
     try {
+        const user = await User.findById(context.userId);
+
+        user.tokens = user.tokens.filter(token => {
+            return token.token !== context.req.cookies['client-token'];
+        });
+
+        await user.save();
+
         context.res.clearCookie('client-token');
     } catch (e) {
 

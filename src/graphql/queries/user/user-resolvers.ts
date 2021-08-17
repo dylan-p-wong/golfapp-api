@@ -27,39 +27,37 @@ const userNotificationResolve = async (obj, { count = 3 }, context) => {
 const userTotalsResolve = async (obj, args, context) => {
     const user = await User.findById(context.userId);
 
-    await user.populate([{path: 'lessons_coach'}, {path: 'swings'}, {path: 'lessons_player'}]).execPopulate();
+    await user.populate([{path: 'students'}, {path: 'lessons_coach'}, {path: 'swings'}, {path: 'lessons_player'}]).execPopulate();
 
     const lessonsRecievedThisMonth = numberInLastMonth(user.lessons_player);
     const lessonsThisMonth = numberInLastMonth(user.lessons_coach);
     const swingsThisMonth = numberInLastMonth(user.swings);
 
-
-    if (user.playerAccount && user.coachAccount) {
-        return {
-            lessonsRecievedThisMonth,
-            lessonsThisMonth,
-            swingsThisMonth,
-            totalLessonsRecieved: user.lessons_player.length,
-            totalLessons: user.lessons_coach.length,
-            totalSwings: user.swings.length
-        }
-    }
-
-    if (user.playerAccount) {
-        return {
-            lessonsRecievedThisMonth,
-            swingsThisMonth,
-            totalLessonsRecieved: user.lessons_player.length,
-            totalSwings: user.swings.length
-        }
-    }
-
-    if (user.coachAccount) {
-        return {
-            lessonsThisMonth,
-            totalLessons: user.lessons_coach.length,
-        }
+    return {
+        lessonsRecievedThisMonth,
+        lessonsThisMonth,
+        swingsThisMonth,
+        totalLessonsRecieved: user.lessons_player.length,
+        totalLessons: user.lessons_coach.length,
+        totalSwings: user.swings.length,
+        totalStudents: user.students.length
     }
 }
 
-export { userTierResolve, userNotificationResolve, userTotalsResolve };
+const userStudentsResolve = async (obj, args, context) => {
+    const user = await User.findById(context.userId);
+
+    await user.populate([{path: 'students', populate: [{ path: 'player' }]}]).execPopulate();
+
+    return user.students.map(connection => connection.player);
+}
+
+const userCoachesResolve = async (obj, args, context) => {
+    const user = await User.findById(context.userId);
+
+    await user.populate([{path: 'coaches', populate: [{ path: 'coach' }]}]).execPopulate();
+
+    return user.coaches.map(connection => connection.coach);
+}
+
+export { userCoachesResolve, userTierResolve, userNotificationResolve, userTotalsResolve, userStudentsResolve };

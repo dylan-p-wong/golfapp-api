@@ -1,8 +1,10 @@
 import User from '../../../models/user';
 import { numberInLastMonth } from '../../../utils/dates';
 
-const userInfoResolve = async (obj, args, context) => {
-    const user = await User.findById(context.userId);
+const userInfoResolve = async (obj, { _id }, context) => {
+    const userId = _id ? _id : context.userId; 
+    
+    const user = await User.findById(userId);
     
     return user;
 }

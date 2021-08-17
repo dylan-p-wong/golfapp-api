@@ -320,6 +320,9 @@ const UserTotalsType = new GraphQLObjectType({
         lessonsRecievedThisMonth: {
             type: GraphQLInt
         },
+        totalStudents: {
+            type: GraphQLInt
+        }
     }
 });
 

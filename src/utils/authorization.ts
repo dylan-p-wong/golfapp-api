@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import User from '../models/user';
 
 const authorization = async (resolve, params) => {
     const { obj, args, context } = params;
@@ -15,6 +16,12 @@ const authorization = async (resolve, params) => {
 
     if (!decoded || !decoded._id) {
         return null;
+    }
+
+    const user = await User.findOne({ _id: decoded._id, 'tokens.token': token});
+
+    if (!user) {
+        throw new Error("Unauthorized");
     }
 
     context.userId = decoded._id;

@@ -16,11 +16,14 @@ interface IUser extends Document {
     playerInfoCompleted: boolean,
     playerTier: string,
     coachTier: string,
+    students?: [PopulatedDoc<Document>],
+    coaches?: [PopulatedDoc<Document>],
     swings?: [PopulatedDoc<Document>],
     lessons_player?: [PopulatedDoc<Document>],
     lessons_coach?: [PopulatedDoc<Document>],
     lesson_requests_player?: [PopulatedDoc<Document>],
     lesson_requests_coach?: [PopulatedDoc<Document>],
+    tokens: { token: string }[],
     generateAuthToken(): Promise<String>
 }
 
@@ -92,7 +95,25 @@ const userSchema = new mongoose.Schema<IUser, UserModel>({
         default: FREE_TIER,
         required: true
     },
+    tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }]
 }, { timestamps: true });
+
+userSchema.virtual('students', {
+    ref: 'PlayerCoachConnection',
+    localField: '_id',
+    foreignField: 'coach'
+});
+
+userSchema.virtual('coaches', {
+    ref: 'PlayerCoachConnection',
+    localField: '_id',
+    foreignField: 'player'
+});
 
 userSchema.virtual('swings', {
     ref: 'Swing',
@@ -158,6 +179,9 @@ userSchema.methods.generateAuthToken = async function () {
     const user = this;
     const token = await jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
 
+    user.tokens = user.tokens.concat({ token: token });
+    await user.save();
+
     return token;
 }
 
@@ -166,6 +190,15 @@ userSchema.pre<IUser>('save', async function (next) {
 
     if (user.isModified('password')) {
         user.password = await argon2.hash(user.password);
+    }
+
+    next();
+});
+
+userSchema.pre('findOneAndUpdate', async function (next) {
+    
+    if (this._update.password) {
+        this._update.password = await argon2.hash(this._update.password);
     }
 
     next();

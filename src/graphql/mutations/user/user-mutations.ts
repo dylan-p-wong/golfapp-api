@@ -2,7 +2,7 @@ import { GraphQLBoolean, GraphQLString } from "graphql";
 import { authorization } from '../../../utils/authorization';
 import { UserInfoType } from "../../common/types";
 import { UserInputType } from "./user-input-types";
-import { updateUserResolve } from "./user-resolvers";
+import { addPlayerCoachConnectionResolve, updateUserResolve } from "./user-resolvers";
 
 const userMutations = {
     updateUser: {
@@ -14,6 +14,24 @@ const userMutations = {
         },
         resolve: (obj, args, context) => {
             return authorization(updateUserResolve, {
+                obj,
+                args,
+                context
+            });
+        }
+    },
+    addPlayerCoachConnection: {
+        type: GraphQLBoolean,
+        args: {
+            playerId: {
+                type: GraphQLString
+            },
+            coachId: {
+                type: GraphQLString
+            }
+        },
+        resolve: (obj, args, context) => {
+            return authorization(addPlayerCoachConnectionResolve, {
                 obj,
                 args,
                 context

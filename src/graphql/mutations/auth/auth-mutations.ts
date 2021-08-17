@@ -41,7 +41,13 @@ const authMutations = {
     },
     logout: {
         type: GraphQLBoolean,
-        resolve: logoutResolve
+        resolve: (obj, args, context) => {
+            return authorization(logoutResolve, {
+                obj,
+                args,
+                context
+            });
+        }
     }
 }
 
