@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import customerRoutes from './routes/customer-routes';
 
-if (process.env.NODE_ENV !== 'PROD') {
+if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'staging') {
     require('dotenv').config();
 }
 
