@@ -197,8 +197,8 @@ userSchema.pre<IUser>('save', async function (next) {
 
 userSchema.pre('findOneAndUpdate', async function (next) {
     
-    if (this._update.password) {
-        this._update.password = await argon2.hash(this._update.password);
+    if (this['_update'].password) {
+        this['_update'].password = await argon2.hash(this['_update'].password);
     }
 
     next();
