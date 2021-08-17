@@ -1,9 +1,5 @@
 import AWS from 'aws-sdk';
 
-if (process.env.NODE_ENV !== 'PROD') {
-    require('dotenv').config();
-}
-
 const s3 = new AWS.S3({
     apiVersion: 'latest',
     region: 'us-east-2'
