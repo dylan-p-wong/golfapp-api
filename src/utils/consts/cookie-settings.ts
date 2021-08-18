@@ -1,8 +1,9 @@
 const cookieSettings = {
+    path: '/',
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging',
     sameSite: "lax",
-    domain: process.env.CLIENT_URL
+    domain: '.auctionhouse.shop'
 }
 
 export default cookieSettings;
