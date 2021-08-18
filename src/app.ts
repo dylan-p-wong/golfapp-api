@@ -21,7 +21,13 @@ app.use(cors({
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: true });
 
 app.use(cookieParser());
+
+app.get('/.well-known/acme-challenge/iLPEjYId6dvnGsqMiC6DiPiIRQhdcTK0flRxJP28BZM', (req, res) => {
+    res.send('iLPEjYId6dvnGsqMiC6DiPiIRQhdcTK0flRxJP28BZM._welgWVhWkOVaEScgZRyppdq29ge2QxHYlPuRX4syaE');
+});
+
 app.use('/customers', customerRoutes);
+
 
 app.listen(port, () => {
     console.log(`Server running`);
