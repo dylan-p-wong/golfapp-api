@@ -2,6 +2,7 @@ import mongoose, { Document, Model, PopulatedDoc } from 'mongoose';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import { FREE_TIER } from '../utils/consts/tiers';
+import validator from 'validator';
 
 interface IUser extends Document {
     firstname: string,
@@ -34,23 +35,38 @@ interface UserModel extends Model<IUser> {
 const userSchema = new mongoose.Schema<IUser, UserModel>({
     firstname: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     lastname: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     email: {
         type: String,
         unique: true,
-        required: true
+        required: true,
+        trim: true,
+        lowercase: true,
+        validate(value) {
+            if (!validator.isEmail(value)) {
+                throw new Error("Email is invalid")
+            }
+        },
     },
     phone: {
-        type: String
+        type: String,
+        validate(value) {
+            if (!validator.isMobilePhone(value)) {
+                throw new Error("Phone is invalid")
+            }
+        },
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        minlength: 7
     },
     hand: {
         type: String,
@@ -185,7 +201,7 @@ userSchema.methods.generateAuthToken = async function () {
     return token;
 }
 
-userSchema.pre<IUser>('save', async function (next) {
+userSchema.pre('save', async function (next) {
     const user = this;
 
     if (user.isModified('password')) {
@@ -204,6 +220,6 @@ userSchema.pre('findOneAndUpdate', async function (next) {
     next();
 });
 
-const User = mongoose.model<IUser, UserModel> ('User', userSchema);
+const User = mongoose.model<IUser, UserModel>('User', userSchema);
 
 export default User;

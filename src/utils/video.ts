@@ -2,7 +2,7 @@ import AWS from 'aws-sdk';
 
 const s3 = new AWS.S3({
     apiVersion: 'latest',
-    region: 'us-east-2'
+    region: 'us-east-2',
 });
 
 const getFileKey = () => {
