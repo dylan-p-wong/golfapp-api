@@ -26,6 +26,10 @@ const addSwingResolve = async (obj, { title, note, playerId, frontVideo, sideVid
         let frontVideoURL;
         let sideVideoURL;
 
+        if (!frontVideo && !sideVideo) {
+            throw new Error("You must provide at least one swing.");
+        }
+
         if (frontVideo) {
             const { filename, mimetype, encoding, createReadStream } = await frontVideo;
             frontVideoURL = await uploadVideo(createReadStream());
